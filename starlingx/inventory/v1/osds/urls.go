@@ -22,7 +22,7 @@ func listURL(c *gophercloud.ServiceClient, hostid string) string {
 }
 
 func createURL(c *gophercloud.ServiceClient) string {
-	return rootURL(c)
+	return c.ServiceURL("istors")
 }
 
 func updateURL(c *gophercloud.ServiceClient, id string) string {

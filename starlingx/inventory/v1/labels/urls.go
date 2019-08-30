@@ -13,6 +13,10 @@ func rootURL(c *gophercloud.ServiceClient, hostid string) string {
 	return c.ServiceURL("labels", hostid)
 }
 
+func getURL(c *gophercloud.ServiceClient, id string) string {
+	return resourceURL(c, id)
+}
+
 func listURL(c *gophercloud.ServiceClient, hostid string) string {
 	return c.ServiceURL("ihosts", hostid, "labels")
 }

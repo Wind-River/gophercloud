@@ -19,6 +19,11 @@ type commonResult struct {
 	gophercloud.Result
 }
 
+// GetResult represents the result of a get operation.
+type GetResult struct {
+	commonResult
+}
+
 // CreateResult represents the result of a create operation.
 type CreateResult struct {
 	commonResult

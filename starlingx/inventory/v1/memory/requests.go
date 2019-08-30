@@ -4,6 +4,7 @@
 package memory
 
 import (
+	"fmt"
 	"github.com/gophercloud/gophercloud"
 	"github.com/gophercloud/gophercloud/pagination"
 	inventoryv1 "github.com/gophercloud/gophercloud/starlingx/inventory/v1"
@@ -106,4 +107,12 @@ func ListMemory(c *gophercloud.ServiceClient, hostid string) ([]Memory, error) {
 	}
 
 	return objs, err
+}
+
+// Get retrieves a specific memory based on its unique ID.
+func Get(c *gophercloud.ServiceClient, id string) GetResult {
+	var res GetResult
+	_, res.Err = c.Get(getURL(c, id), &res.Body, nil)
+	fmt.Println(getURL(c, id))
+	return res
 }

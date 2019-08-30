@@ -9,6 +9,10 @@ func resourceURL(c *gophercloud.ServiceClient, hostid string) string {
 	return c.ServiceURL("ihosts", hostid, "imemorys")
 }
 
+func getURL(c *gophercloud.ServiceClient, id string) string {
+	return c.ServiceURL("imemorys", id)
+}
+
 func listURL(c *gophercloud.ServiceClient, hostid string) string {
 	return resourceURL(c, hostid)
 }

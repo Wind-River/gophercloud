@@ -36,6 +36,7 @@ const (
 	IFTypeVLAN     = "vlan"
 	IFTypeEthernet = "ethernet"
 	IFTypeVirtual  = "virtual"
+	IFTypeVF       = "vf"
 )
 
 // Defines the system defined value for interface MTU settings
@@ -43,6 +44,14 @@ const (
 	DefaultMTU = 1500
 )
 
+// Defines the valid PTP settings
+const (
+	PTPRoleMaster = "master"
+	PTPRoleSlave  = "slave"
+	PTPRoleNone   = "none"
+)
+
+// InterfaceOpts provides configured interface options
 type InterfaceOpts struct {
 	HostUUID         *string   `json:"ihost_uuid,omitempty" mapstructure:"ihost_uuid"`
 	Type             *string   `json:"iftype,omitempty" mapstructure:"iftype"`
@@ -61,8 +70,10 @@ type InterfaceOpts struct {
 	AEMode           *string   `json:"aemode,omitempty" mapstructure:"aemode"`
 	AETransmitHash   *string   `json:"txhashpolicy,omitempty" mapstructure:"txhashpolicy"`
 	VFCount          *int      `json:"sriov_numvfs,omitempty" mapstructure:"sriov_numvfs"`
+	VFDriver         *string   `json:"sriov_vf_driver,omitempty" mapstructure:"sriov_vf_driver"`
 	Uses             *[]string `json:"uses,omitempty" mapstructure:"uses"`
 	UsesModify       *[]string `json:"usesmodify,omitempty" mapstructure:"usesmodify"`
+	PTPRole          *string   `json:"ptp_role,omitempty" mapstructure:"ptp_role"`
 }
 
 // ListOptsBuilder allows extensions to add additional parameters to the

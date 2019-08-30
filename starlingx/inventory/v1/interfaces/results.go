@@ -96,6 +96,9 @@ type Interface struct {
 	// VFCount is the number of SRIOV VF interfaces configured.
 	VFCount *int `json:"sriov_numvfs,omitempty"`
 
+	// VFDriver is the NIC driver to be bound on the host for each VF device
+	VFDriver *string `json:"sriov_vf_driver,omitempty"`
+
 	// Uses is the list of interfaces upon which this interface depends. This is
 	// only applicable to VLAN and Bond interfaces.
 	Uses []string `json:"uses"`
@@ -103,6 +106,9 @@ type Interface struct {
 	// Users is the list of interfaces that depend on this interface.  This is
 	// only applicable to Ethernet and Bond interfaces.
 	Users []string `json:"used_by"`
+
+	// PTPRole is the configuration of the interface as ptp master, slave, or none.
+	PTPRole *string `json:"ptp_role,omitempty"`
 }
 
 // InterfacePage is the page returned by a pager when traversing over a
