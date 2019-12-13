@@ -86,3 +86,9 @@ func ListLabels(c *gophercloud.ServiceClient, hostid string) ([]Label, error) {
 
 	return objs, err
 }
+
+// Get retrieves a specific label based on its unique ID.
+func Get(c *gophercloud.ServiceClient, id string) (r GetResult) {
+	_, r.Err = c.Get(getURL(c, id), &r.Body, nil)
+	return r
+}
