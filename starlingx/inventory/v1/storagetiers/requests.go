@@ -45,8 +45,8 @@ func (opts ListOpts) ToStorageTierListQuery() (string, error) {
 // List returns a Pager which allows you to iterate over a collection of
 // StorageTiers. It accepts a ListOpts struct, which allows you to filter
 // and sort the returned collection for greater efficiency.
-func List(c *gophercloud.ServiceClient, clusterID string, opts ListOptsBuilder) pagination.Pager {
-	url := listURL(c, clusterID)
+func List(c *gophercloud.ServiceClient, opts ListOptsBuilder) pagination.Pager {
+	url := listURL(c)
 	if opts != nil {
 		query, err := opts.ToStorageTierListQuery()
 		if err != nil {
@@ -107,7 +107,7 @@ func Delete(c *gophercloud.ServiceClient, id string) (r DeleteResult) {
 
 // ListTiers returns the current set of configured storage backends
 func ListTiers(c *gophercloud.ServiceClient, clusterID string) ([]StorageTier, error) {
-	pages, err := List(c, clusterID, nil).AllPages()
+	pages, err := List(c, nil).AllPages()
 	if err != nil {
 		return nil, err
 	}
