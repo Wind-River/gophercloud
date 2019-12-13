@@ -89,7 +89,7 @@ func (opts *OSDOpts) fixUnits() {
 
 // Create accepts a CreateOpts struct and creates a new volume group using the
 // values provided.
-func Create(c *gophercloud.ServiceClient, opts OSDOpts) (r CreateResult) {
+func Create(c *gophercloud.ServiceClient, hostid string, opts OSDOpts) (r CreateResult) {
 	opts.fixUnits()
 
 	reqBody, err := inventoryv1.ConvertToCreateMap(opts)
@@ -98,7 +98,7 @@ func Create(c *gophercloud.ServiceClient, opts OSDOpts) (r CreateResult) {
 		return r
 	}
 
-	_, r.Err = c.Post(createURL(c), reqBody, &r.Body, &gophercloud.RequestOpts{
+	_, r.Err = c.Post(createURL(c, hostid), reqBody, &r.Body, &gophercloud.RequestOpts{
 		OkCodes: []int{200, 201, 202},
 	})
 	return r
