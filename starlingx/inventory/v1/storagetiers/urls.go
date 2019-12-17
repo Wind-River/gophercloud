@@ -6,7 +6,7 @@ package storagetiers
 import "github.com/gophercloud/gophercloud"
 
 func resourceURL(c *gophercloud.ServiceClient, id string) string {
-	return c.ServiceURL("storage_backend", id)
+	return c.ServiceURL("storage_tiers", id)
 }
 
 func rootURL(c *gophercloud.ServiceClient) string {
