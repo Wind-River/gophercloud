@@ -9,8 +9,8 @@ func resourceURL(c *gophercloud.ServiceClient, hostid string) string {
 	return c.ServiceURL("ihosts", hostid, "icpus")
 }
 
-func getURL(c *gophercloud.ServiceClient, hostid string) string {
-	return resourceURL(c, hostid)
+func getURL(c *gophercloud.ServiceClient, cpuid string) string {
+	return c.ServiceURL("icpus", cpuid)
 }
 
 func listURL(c *gophercloud.ServiceClient, hostid string) string {

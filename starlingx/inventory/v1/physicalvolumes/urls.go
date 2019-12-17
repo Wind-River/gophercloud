@@ -18,7 +18,8 @@ func getURL(c *gophercloud.ServiceClient, id string) string {
 }
 
 func listURL(c *gophercloud.ServiceClient, hostid string) string {
-	return c.ServiceURL("ihosts", hostid, "ipvs")
+	return rootURL(c)
+	// return c.ServiceURL("ihosts", hostid, "ipvs")
 }
 
 func createURL(c *gophercloud.ServiceClient) string {
