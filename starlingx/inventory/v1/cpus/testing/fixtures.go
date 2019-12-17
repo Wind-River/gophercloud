@@ -98,7 +98,7 @@ func HandleCPUListSuccessfully(t *testing.T) {
 }
 
 func HandleCPUGetSuccessfully(t *testing.T) {
-	th.Mux.HandleFunc("/icpus/0469d0bb-da3d-439d-bb6e-4720f1e74021", func(w http.ResponseWriter, r *http.Request) {
+	th.Mux.HandleFunc("/ihosts/f757b5c7-89ab-4d93-bfd7-a97780ec2c1e/icpus", func(w http.ResponseWriter, r *http.Request) {
 		th.TestMethod(t, r, "GET")
 		th.TestHeader(t, r, "X-Auth-Token", client.TokenID)
 		th.TestHeader(t, r, "Accept", "application/json")

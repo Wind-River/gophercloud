@@ -62,7 +62,7 @@ func TestGetCPU(t *testing.T) {
 	HandleCPUGetSuccessfully(t)
 
 	client := client.ServiceClient()
-	actual, err := cpus.Get(client, "0469d0bb-da3d-439d-bb6e-4720f1e74021").Extract()
+	actual, err := cpus.Get(client, "f757b5c7-89ab-4d93-bfd7-a97780ec2c1e").Extract()
 	if err != nil {
 		t.Fatalf("Unexpected Get error: %v", err)
 	}
