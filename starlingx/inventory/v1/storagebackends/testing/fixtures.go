@@ -116,10 +116,10 @@ func HandleStorageBackendCreationSuccessfully(t *testing.T, response string) {
 		th.TestMethod(t, r, "POST")
 		th.TestHeader(t, r, "X-Auth-Token", client.TokenID)
 		th.TestJSONRequest(t, r, `{
-          "backend": "ceph",
-          "name": "ceph-store",
-          "capabilities": {},
-          "confirmed": false
+        	"backend": "ceph",
+        	"name": "ceph-store",
+        	"capabilities": {},
+        	"confirmed": false
         }`)
 
 		w.WriteHeader(http.StatusAccepted)
@@ -134,8 +134,10 @@ func HandleStorageBackendUpdateSuccessfully(t *testing.T) {
 		th.TestHeader(t, r, "X-Auth-Token", client.TokenID)
 		th.TestHeader(t, r, "Accept", "application/json")
 		th.TestHeader(t, r, "Content-Type", "application/json")
-		th.TestJSONRequest(t, r, `[{"path": "/capabilities", "value": {}, "op": "replace"},
-            {"op": "replace", "path": "/confirmed", "value": false}]`)
+		th.TestJSONRequest(t, r, `[
+			{"path": "/capabilities", "value": {}, "op": "replace"},
+			{"op": "replace", "path": "/confirmed", "value": false}
+		]`)
 
 		fmt.Fprintf(w, StorageBackendSingleBody)
 	})
