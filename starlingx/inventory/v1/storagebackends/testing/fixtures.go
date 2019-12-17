@@ -116,19 +116,11 @@ func HandleStorageBackendCreationSuccessfully(t *testing.T, response string) {
 		th.TestMethod(t, r, "POST")
 		th.TestHeader(t, r, "X-Auth-Token", client.TokenID)
 		th.TestJSONRequest(t, r, `{
-<<<<<<< HEAD
 			"backend": "ceph",
 			"name": "ceph-store",
 			"capabilities": {},
 			"confirmed": false
 		}`)
-=======
-        	"backend": "ceph",
-        	"name": "ceph-store",
-        	"capabilities": {},
-        	"confirmed": false
-        }`)
->>>>>>> 08dba1af3efc54755bf0f357789e5b1b558e78ec
 
 		w.WriteHeader(http.StatusAccepted)
 		w.Header().Add("Content-Type", "application/json")
