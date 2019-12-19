@@ -107,7 +107,7 @@ func (opts *DiskPartitionOpts) fixUnits() {
 
 // Create accepts a CreateOpts struct and creates a new partition using the
 // values provided.
-func Create(c *gophercloud.ServiceClient, hostID string, opts DiskPartitionOpts) (r CreateResult) {
+func Create(c *gophercloud.ServiceClient, opts DiskPartitionOpts) (r CreateResult) {
 	opts.fixUnits()
 
 	reqBody, err := inventoryv1.ConvertToCreateMap(opts)
@@ -116,7 +116,7 @@ func Create(c *gophercloud.ServiceClient, hostID string, opts DiskPartitionOpts)
 		return r
 	}
 
-	_, r.Err = c.Post(createURL(c, hostID), reqBody, &r.Body, &gophercloud.RequestOpts{
+	_, r.Err = c.Post(createURL(c), reqBody, &r.Body, &gophercloud.RequestOpts{
 		OkCodes: []int{200, 201, 202},
 	})
 	return r

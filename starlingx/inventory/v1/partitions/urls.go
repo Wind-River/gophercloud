@@ -21,8 +21,8 @@ func listURL(c *gophercloud.ServiceClient, hostID string) string {
 	return c.ServiceURL("ihosts", hostID, "partitions")
 }
 
-func createURL(c *gophercloud.ServiceClient, hostID string) string {
-	return c.ServiceURL("ihosts", hostID, "partitions")
+func createURL(c *gophercloud.ServiceClient) string {
+	return rootURL(c)
 }
 
 func updateURL(c *gophercloud.ServiceClient, id string) string {
