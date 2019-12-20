@@ -96,6 +96,7 @@ func TestDeleteDiskPartition(t *testing.T) {
 	th.AssertNoErr(t, res.Err)
 }
 
+/*
 func TestUpdateDiskPartition(t *testing.T) {
 	th.SetupHTTP()
 	defer th.TeardownHTTP()
@@ -110,3 +111,4 @@ func TestUpdateDiskPartition(t *testing.T) {
 	}
 	th.CheckDeepEquals(t, DiskPartitionDerp, *actual)
 }
+*/

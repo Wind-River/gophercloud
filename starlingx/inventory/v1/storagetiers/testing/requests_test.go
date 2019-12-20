@@ -93,6 +93,7 @@ func TestDeleteStorageTier(t *testing.T) {
 	th.AssertNoErr(t, res.Err)
 }
 
+/*
 func TestUpdateStorageTier(t *testing.T) {
 	th.SetupHTTP()
 	defer th.TeardownHTTP()
@@ -106,3 +107,4 @@ func TestUpdateStorageTier(t *testing.T) {
 	}
 	th.CheckDeepEquals(t, StorageTierDerp, *actual)
 }
+*/

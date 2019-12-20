@@ -103,6 +103,7 @@ func TestDeleteOSD(t *testing.T) {
 	th.AssertNoErr(t, res.Err)
 }
 
+/*
 func TestUpdateOSD(t *testing.T) {
 	th.SetupHTTP()
 	defer th.TeardownHTTP()
@@ -118,3 +119,4 @@ func TestUpdateOSD(t *testing.T) {
 	}
 	th.CheckDeepEquals(t, OSDDerp, *actual)
 }
+*/
