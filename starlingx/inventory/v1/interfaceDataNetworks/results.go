@@ -50,11 +50,11 @@ type InterfaceDataNetwork struct {
 
 	// DataNetworkUUID defines the system assigned unique UUID of the associated
 	// data network.
-	DataNetworkUUID string `json:"network_uuid"`
+	DataNetworkUUID string `json:"datanetwork_uuid"`
 
 	// DataNetworkID defines the system assigned sequential integer id value of
 	// the associated network.
-	DataNetworkID int `json:"network_id"`
+	DataNetworkID int `json:"datanetwork_id"`
 
 	// DataNetworkType defines the type value assigned to the data network.
 	DataNetworkType string `json:"network_type"`

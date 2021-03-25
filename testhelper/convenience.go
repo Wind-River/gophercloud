@@ -9,6 +9,7 @@ import (
 	"runtime"
 	"strings"
 	"testing"
+	"github.com/google/go-cmp/cmp"
 )
 
 const (
@@ -313,6 +314,43 @@ func isJSONEquals(t *testing.T, expectedJSON string, actual interface{}) bool {
 	return true
 }
 
+// isJSONEqualsUnordered is a utility function that implements JSON comparison for CheckJSONEqualsUnordered.
+func isJSONEqualsUnordered(t *testing.T, expectedJSON string, actual interface{}) bool {
+	var parsedExpected, parsedActual interface{}
+	err := json.Unmarshal([]byte(expectedJSON), &parsedExpected)
+	if err != nil {
+		t.Errorf("Unable to parse expected value as JSON: %v", err)
+		return false
+	}
+
+	jsonActual, err := json.Marshal(actual)
+	AssertNoErr(t, err)
+	err = json.Unmarshal(jsonActual, &parsedActual)
+	AssertNoErr(t, err)
+
+	if !cmp.Equal(parsedExpected, parsedActual) {
+		prettyExpected, err := json.MarshalIndent(parsedExpected, "", "  ")
+		if err != nil {
+			t.Logf("Unable to pretty-print expected JSON: %v\n%s", err, expectedJSON)
+		} else {
+			// We can't use green() here because %#v prints prettyExpected as a byte array literal, which
+			// is... unhelpful. Converting it to a string first leaves "\n" uninterpreted for some reason.
+			t.Logf("Expected JSON:\n%s%s%s", greenCode, prettyExpected, resetCode)
+		}
+
+		prettyActual, err := json.MarshalIndent(actual, "", "  ")
+		if err != nil {
+			t.Logf("Unable to pretty-print actual JSON: %v\n%#v", err, actual)
+		} else {
+			// We can't use yellow() for the same reason.
+			t.Logf("Actual JSON:\n%s%s%s", yellowCode, prettyActual, resetCode)
+		}
+
+		return false
+	}
+	return true
+}
+
 // AssertJSONEquals serializes a value as JSON, parses an expected string as JSON, and ensures that
 // both are consistent. If they aren't, the expected and actual structures are pretty-printed and
 // shown for comparison.
@@ -328,6 +366,14 @@ func AssertJSONEquals(t *testing.T, expectedJSON string, actual interface{}) {
 // CheckJSONEquals is similar to AssertJSONEquals, but nonfatal.
 func CheckJSONEquals(t *testing.T, expectedJSON string, actual interface{}) {
 	if !isJSONEquals(t, expectedJSON, actual) {
+		logError(t, "The generated JSON structure differed.")
+	}
+}
+
+// CheckJSONEqualsUnordered is similar to AssertJSONEquals, but will not return false
+// if order of fields is different.
+func CheckJSONEqualsUnordered(t *testing.T, expectedJSON string, actual interface{}) {
+	if !isJSONEqualsUnordered(t, expectedJSON, actual) {
 		logError(t, "The generated JSON structure differed.")
 	}
 }
