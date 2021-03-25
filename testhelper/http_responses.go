@@ -91,7 +91,7 @@ func TestJSONRequest(t *testing.T, r *http.Request, expected string) {
 		t.Errorf("Unable to parse request body as JSON: %v", err)
 	}
 
-	CheckJSONEquals(t, expected, actualJSON)
+	CheckJSONEqualsUnordered(t, expected, actualJSON)
 }
 
 func normalizeMultipartBoundary(body string) string {
