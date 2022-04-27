@@ -1,5 +1,5 @@
 /* SPDX-License-Identifier: Apache-2.0 */
-/* Copyright(c) 2019 Wind River Systems, Inc. */
+/* Copyright(c) 2019-2022 Wind River Systems, Inc. */
 
 package testing
 
@@ -80,22 +80,24 @@ func TestCreateHost(t *testing.T) {
 	location := hosts.LocationOpts{Name: icewallLocation}
 	installOutput := HostDerp.InstallOutput
 	console := HostDerp.Console
+	maxCPUFrequency := HostDerp.MaxCPUFrequency
 	actual, err := hosts.Create(client.ServiceClient(), hosts.HostOpts{
-		Hostname:      &hostname,
-		Personality:   &personality,
-		SubFunctions:  &subfunctions,
-		Location:      &location,
-		InstallOutput: &installOutput,
-		Console:       &console,
-		BootIP:        nil,
-		BootMAC:       nil,
-		RootDevice:    nil,
-		BootDevice:    nil,
-		BMAddress:     nil,
-		BMType:        nil,
-		BMUsername:    nil,
-		BMPassword:    nil,
-		Action:        nil,
+		Hostname:        &hostname,
+		Personality:     &personality,
+		SubFunctions:    &subfunctions,
+		Location:        &location,
+		InstallOutput:   &installOutput,
+		Console:         &console,
+		MaxCPUFrequency: &maxCPUFrequency,
+		BootIP:          nil,
+		BootMAC:         nil,
+		RootDevice:      nil,
+		BootDevice:      nil,
+		BMAddress:       nil,
+		BMType:          nil,
+		BMUsername:      nil,
+		BMPassword:      nil,
+		Action:          nil,
 	}).Extract()
 	th.AssertNoErr(t, err)
 
