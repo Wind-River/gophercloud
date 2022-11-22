@@ -8,8 +8,9 @@ import (
 	"github.com/gophercloud/gophercloud/starlingx/inventory/v1/hosts"
 	"github.com/gophercloud/gophercloud/testhelper/client"
 
-	th "github.com/gophercloud/gophercloud/testhelper"
 	"testing"
+
+	th "github.com/gophercloud/gophercloud/testhelper"
 )
 
 func TestListHosts(t *testing.T) {
@@ -80,24 +81,24 @@ func TestCreateHost(t *testing.T) {
 	location := hosts.LocationOpts{Name: icewallLocation}
 	installOutput := HostDerp.InstallOutput
 	console := HostDerp.Console
-	maxCPUFrequency := HostDerp.MaxCPUFrequency
+	maxCPUMhzConfigured := HostDerp.MaxCPUMhzConfigured
 	actual, err := hosts.Create(client.ServiceClient(), hosts.HostOpts{
-		Hostname:        &hostname,
-		Personality:     &personality,
-		SubFunctions:    &subfunctions,
-		Location:        &location,
-		InstallOutput:   &installOutput,
-		Console:         &console,
-		MaxCPUFrequency: &maxCPUFrequency,
-		BootIP:          nil,
-		BootMAC:         nil,
-		RootDevice:      nil,
-		BootDevice:      nil,
-		BMAddress:       nil,
-		BMType:          nil,
-		BMUsername:      nil,
-		BMPassword:      nil,
-		Action:          nil,
+		Hostname:            &hostname,
+		Personality:         &personality,
+		SubFunctions:        &subfunctions,
+		Location:            &location,
+		InstallOutput:       &installOutput,
+		Console:             &console,
+		MaxCPUMhzConfigured: &maxCPUMhzConfigured,
+		BootIP:              nil,
+		BootMAC:             nil,
+		RootDevice:          nil,
+		BootDevice:          nil,
+		BMAddress:           nil,
+		BMType:              nil,
+		BMUsername:          nil,
+		BMPassword:          nil,
+		Action:              nil,
 	}).Extract()
 	th.AssertNoErr(t, err)
 

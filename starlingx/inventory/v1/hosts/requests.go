@@ -30,7 +30,7 @@ type HostOpts struct {
 	BMPassword           *string       `json:"-" mapstructure:"bm_password"`
 	ClockSynchronization *string       `json:"clock_synchronization,omitempty" mapstructure:"clock_synchronization"`
 	Action               *string       `json:"action,omitempty" mapstructure:"action"`
-	MaxCPUFrequency      *string       `json:"max_cpu_frequency,omitempty" mapstructure:"max_cpu_frequency"`
+	MaxCPUMhzConfigured  *string       `json:"max_cpu_mhz_configured,omitempty" mapstructure:"max_cpu_mhz_configured"`
 }
 
 const (

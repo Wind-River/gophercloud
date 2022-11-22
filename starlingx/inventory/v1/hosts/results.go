@@ -199,8 +199,8 @@ type Host struct {
 	// ClockSynchronization is the chosen clock source for the host.
 	ClockSynchronization *string `json:"clock_synchronization,omitempty"`
 
-	//MaxCPUFrequency is the max limit of the CPU frequency set on the host.
-	MaxCPUFrequency string `json:"max_cpu_frequency,omitempty"`
+	//MaxCPUMhzConfigured is the max limit of the CPU Mhz configured on the host.
+	MaxCPUMhzConfigured string `json:"max_cpu_mhz_configured,omitempty"`
 }
 
 // HostPage is the page returned by a pager when traversing over a
