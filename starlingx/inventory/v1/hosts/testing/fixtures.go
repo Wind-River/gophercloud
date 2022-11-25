@@ -185,7 +185,7 @@ const HostsListBody = `
       "uptime": 3490,
       "uuid": "d99637e9-5451-45c6-98f4-f18968e43e91",
       "vim_progress_status": null,
-      "max_cpu_mhz_configured": "1800"
+      "MaxCPUMhzConfigured": "1800"
     },
     {
       "action": "none",
@@ -250,7 +250,7 @@ const HostsListBody = `
       "uptime": 149,
       "uuid": "f73dda8e-be3c-4704-ad1e-ed99e44b846e",
       "vim_progress_status": null,
-      "max_cpu_mhz_configured": "2400"
+      "MaxCPUMhzConfigured": "2400"
     },
     {
       "action": "none",
@@ -384,7 +384,7 @@ const SingleHostBody = `
       "uptime": 149,
       "uuid": "f73dda8e-be3c-4704-ad1e-ed99e44b846e",
       "vim_progress_status": null,
-      "max_cpu_mhz_configured": "2400"
+      "MaxCPUMhzConfigured": "2400"
 }
 `
 
@@ -439,7 +439,7 @@ func HandleHostCreationSuccessfully(t *testing.T, response string) {
           },
           "personality": "controller",
           "subfunctions": "controller,worker",
-          "max_cpu_mhz_configured": "2400"
+          "MaxCPUMhzConfigured": "2400"
         }`)
 
 		w.WriteHeader(http.StatusAccepted)
