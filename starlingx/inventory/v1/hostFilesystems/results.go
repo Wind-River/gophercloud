@@ -1,5 +1,5 @@
 /* SPDX-License-Identifier: Apache-2.0 */
-/* Copyright(c) 2019 Wind River Systems, Inc. */
+/* Copyright(c) 2019-2022 Wind River Systems, Inc. */
 
 package hostFilesystems
 
@@ -24,8 +24,18 @@ type GetResult struct {
 	commonResult
 }
 
-// CreateResult represents the result of an update operation.
+// UpdateResult represents the result of an update operation.
 type UpdateResult struct {
+	gophercloud.ErrResult
+}
+
+// CreateResult represents the result of an Create operation.
+type CreateResult struct {
+	commonResult
+}
+
+// DeleteResult contains the response body and error from a Delete request.
+type DeleteResult struct {
 	gophercloud.ErrResult
 }
 

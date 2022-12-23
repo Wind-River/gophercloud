@@ -8,8 +8,9 @@ import (
 	"github.com/gophercloud/gophercloud/starlingx/inventory/v1/hostFilesystems"
 	"github.com/gophercloud/gophercloud/testhelper/client"
 
-	th "github.com/gophercloud/gophercloud/testhelper"
 	"testing"
+
+	th "github.com/gophercloud/gophercloud/testhelper"
 )
 
 func TestListFileSystems(t *testing.T) {
@@ -88,4 +89,34 @@ func TestUpdateFileSystem(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Unexpected Update error: %v", err)
 	}
+}
+
+func TestCreate(t *testing.T) {
+	th.SetupHTTP()
+	defer th.TeardownHTTP()
+
+	HandleFileSystemCreationSuccessfully(t, FileSystemSingleBody)
+	name := "Derp"
+	size := 40
+	hostUUID := "d99637e9-5451-45c6-98f4-f18968e43e91"
+	options := hostFilesystems.CreateFileSystemOpts{
+		Size:     size,
+		HostUUID: hostUUID,
+		Name:     name,
+	}
+	actual, err := hostFilesystems.Create(client.ServiceClient(), options).Extract()
+	th.AssertNoErr(t, err)
+
+	th.AssertEquals(t, actual.Size, 40)
+	th.AssertEquals(t, actual.ID, "1a43b9e1-6360-46c1-adbe-81987a732e94")
+}
+
+func TestDelete(t *testing.T) {
+	th.SetupHTTP()
+	defer th.TeardownHTTP()
+
+	HandleFileSystemDeletionSuccessfully(t)
+
+	res := hostFilesystems.Delete(client.ServiceClient(), "1a43b9e1-6360-46c1-adbe-81987a732e94")
+	th.AssertNoErr(t, res.Err)
 }

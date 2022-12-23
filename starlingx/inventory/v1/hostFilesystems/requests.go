@@ -1,5 +1,5 @@
 /* SPDX-License-Identifier: Apache-2.0 */
-/* Copyright(c) 2019 Wind River Systems, Inc. */
+/* Copyright(c) 2019-2022 Wind River Systems, Inc. */
 
 package hostFilesystems
 
@@ -18,6 +18,12 @@ const (
 type FileSystemOpts struct {
 	Name string `json:"name,omitempty" mapstructure:"name"`
 	Size int    `json:"size,omitempty" mapstructure:"size"`
+}
+
+type CreateFileSystemOpts struct {
+	Name     string `json:"name,omitempty" mapstructure:"name"`
+	Size     int    `json:"size,omitempty" mapstructure:"size"`
+	HostUUID string `json:"ihost_uuid,omitempty" mapstructure:"ihost_uuid"`
 }
 
 // ListOptsBuilder allows extensions to add additional parameters to the
@@ -112,4 +118,24 @@ func ListFileSystems(c *gophercloud.ServiceClient, hostid string) ([]FileSystem,
 	}
 
 	return objs, err
+}
+
+// Create accepts a CreateOpts struct and creates a new filesystem using the
+// values provided.
+func Create(client *gophercloud.ServiceClient, opts CreateFileSystemOpts) (r CreateResult) {
+	reqBody, err := inventoryv1.ConvertToCreateMap(opts)
+	if err != nil {
+		r.Err = err
+		return
+	}
+	_, r.Err = client.Post(createURL(client), reqBody, &r.Body, &gophercloud.RequestOpts{
+		OkCodes: []int{200, 201, 202},
+	})
+	return
+}
+
+// Delete accepts a unique ID and deletes the filesystem associated with it.
+func Delete(c *gophercloud.ServiceClient, id string) (r DeleteResult) {
+	_, r.Err = c.Delete(deleteURL(c, id), nil)
+	return
 }

@@ -5,10 +5,11 @@ package testing
 
 import (
 	"fmt"
-	"github.com/gophercloud/gophercloud/starlingx/inventory/v1/hostFilesystems"
-	"github.com/gophercloud/gophercloud/testhelper/client"
 	"net/http"
 	"testing"
+
+	"github.com/gophercloud/gophercloud/starlingx/inventory/v1/hostFilesystems"
+	"github.com/gophercloud/gophercloud/testhelper/client"
 
 	th "github.com/gophercloud/gophercloud/testhelper"
 )
@@ -127,5 +128,30 @@ func HandleFileSystemUpdateSuccessfully(t *testing.T) {
 		th.TestHeader(t, r, "Content-Type", "application/json")
 		th.TestJSONRequest(t, r, `[ [ { "op": "replace", "path": "/name", "value": "Derp"  }, { "op": "replace", "path": "/size", "value": 50 } ] ]`)
 		fmt.Fprintf(w, FileSystemSingleBody)
+	})
+}
+
+func HandleFileSystemDeletionSuccessfully(t *testing.T) {
+	th.Mux.HandleFunc("/host_fs/1a43b9e1-6360-46c1-adbe-81987a732e94", func(w http.ResponseWriter, r *http.Request) {
+		th.TestMethod(t, r, "DELETE")
+		th.TestHeader(t, r, "X-Auth-Token", client.TokenID)
+
+		w.WriteHeader(http.StatusNoContent)
+	})
+}
+
+func HandleFileSystemCreationSuccessfully(t *testing.T, response string) {
+	th.Mux.HandleFunc("/host_fs", func(w http.ResponseWriter, r *http.Request) {
+		th.TestMethod(t, r, "POST")
+		th.TestHeader(t, r, "X-Auth-Token", client.TokenID)
+		th.TestJSONRequest(t, r, `{
+          "name": "Derp",
+          "ihost_uuid": "d99637e9-5451-45c6-98f4-f18968e43e91",
+          "size": 40
+        }`)
+
+		w.WriteHeader(http.StatusAccepted)
+		w.Header().Add("Content-Type", "application/json")
+		fmt.Fprintf(w, response)
 	})
 }
