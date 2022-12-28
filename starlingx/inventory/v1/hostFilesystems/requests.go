@@ -126,16 +126,16 @@ func Create(client *gophercloud.ServiceClient, opts CreateFileSystemOpts) (r Cre
 	reqBody, err := inventoryv1.ConvertToCreateMap(opts)
 	if err != nil {
 		r.Err = err
-		return
+		return r
 	}
 	_, r.Err = client.Post(createURL(client), reqBody, &r.Body, &gophercloud.RequestOpts{
 		OkCodes: []int{200, 201, 202},
 	})
-	return
+	return r
 }
 
 // Delete accepts a unique ID and deletes the filesystem associated with it.
 func Delete(c *gophercloud.ServiceClient, id string) (r DeleteResult) {
 	_, r.Err = c.Delete(deleteURL(c, id), nil)
-	return
+	return r
 }
