@@ -1,12 +1,12 @@
 /* SPDX-License-Identifier: Apache-2.0 */
-/* Copyright(c) 2022 Wind River Systems, Inc. */
+/* Copyright(c) 2022-2023 Wind River Systems, Inc. */
 
 package ptpparameters
 
 import (
 	"github.com/gophercloud/gophercloud"
 	"github.com/gophercloud/gophercloud/pagination"
-	inventoryv1 "github.com/gophercloud/gophercloud/starlingx/inventory/v1"
+	common "github.com/gophercloud/gophercloud/starlingx"
 )
 
 type PTPPrameterOpts struct {
@@ -68,7 +68,7 @@ func Get(c *gophercloud.ServiceClient, id string) GetResult {
 // Create accepts a CreateOpts struct and creates a new PTPParameter using the
 // values provided.
 func Create(c *gophercloud.ServiceClient, opts PTPPrameterOpts) (r CreateResult) {
-	reqBody, err := inventoryv1.ConvertToCreateMap(opts)
+	reqBody, err := common.ConvertToCreateMap(opts)
 	if err != nil {
 		r.Err = err
 		return r

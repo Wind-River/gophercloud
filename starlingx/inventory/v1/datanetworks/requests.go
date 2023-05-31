@@ -1,12 +1,12 @@
 /* SPDX-License-Identifier: Apache-2.0 */
-/* Copyright(c) 2019 Wind River Systems, Inc. */
+/* Copyright(c) 2019-2023 Wind River Systems, Inc. */
 
 package datanetworks
 
 import (
 	"github.com/gophercloud/gophercloud"
 	"github.com/gophercloud/gophercloud/pagination"
-	inventoryv1 "github.com/gophercloud/gophercloud/starlingx/inventory/v1"
+	common "github.com/gophercloud/gophercloud/starlingx"
 )
 
 const (
@@ -89,7 +89,7 @@ func Get(c *gophercloud.ServiceClient, id string) (r GetResult) {
 // Create accepts a CreateOpts struct and creates a new AddressPool using the
 // values provided.
 func Create(c *gophercloud.ServiceClient, opts DataNetworkOpts) (r CreateResult) {
-	reqBody, err := inventoryv1.ConvertToCreateMap(opts)
+	reqBody, err := common.ConvertToCreateMap(opts)
 	if err != nil {
 		r.Err = err
 		return r
@@ -104,7 +104,7 @@ func Create(c *gophercloud.ServiceClient, opts DataNetworkOpts) (r CreateResult)
 // Update accepts a PatchOpts struct and updates an existing dataNetwork using
 // the values provided. For more information, see the Create function.
 func Update(c *gophercloud.ServiceClient, id string, opts DataNetworkOpts) (r UpdateResult) {
-	reqBody, err := inventoryv1.ConvertToPatchMap(opts, inventoryv1.ReplaceOp)
+	reqBody, err := common.ConvertToPatchMap(opts, common.ReplaceOp)
 	if err != nil {
 		r.Err = err
 		return r

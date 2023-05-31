@@ -1,5 +1,5 @@
 /* SPDX-License-Identifier: Apache-2.0 */
-/* Copyright(c) 2019 Wind River Systems, Inc. */
+/* Copyright(c) 2019-2023 Wind River Systems, Inc. */
 
 package partitions
 
@@ -7,7 +7,7 @@ import (
 	"github.com/alecthomas/units"
 	"github.com/gophercloud/gophercloud"
 	"github.com/gophercloud/gophercloud/pagination"
-	inventoryv1 "github.com/gophercloud/gophercloud/starlingx/inventory/v1"
+	common "github.com/gophercloud/gophercloud/starlingx"
 )
 
 const (
@@ -110,7 +110,7 @@ func (opts *DiskPartitionOpts) fixUnits() {
 func Create(c *gophercloud.ServiceClient, opts DiskPartitionOpts) (r CreateResult) {
 	opts.fixUnits()
 
-	reqBody, err := inventoryv1.ConvertToCreateMap(opts)
+	reqBody, err := common.ConvertToCreateMap(opts)
 	if err != nil {
 		r.Err = err
 		return r
@@ -127,7 +127,7 @@ func Create(c *gophercloud.ServiceClient, opts DiskPartitionOpts) (r CreateResul
 func Update(c *gophercloud.ServiceClient, id string, opts DiskPartitionOpts) (r UpdateResult) {
 	opts.fixUnits()
 
-	reqBody, err := inventoryv1.ConvertToPatchMap(opts, inventoryv1.ReplaceOp)
+	reqBody, err := common.ConvertToPatchMap(opts, common.ReplaceOp)
 	if err != nil {
 		r.Err = err
 		return r

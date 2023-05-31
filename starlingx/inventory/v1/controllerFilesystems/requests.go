@@ -1,12 +1,12 @@
 /* SPDX-License-Identifier: Apache-2.0 */
-/* Copyright(c) 2019 Wind River Systems, Inc. */
+/* Copyright(c) 2019-2023 Wind River Systems, Inc. */
 
 package controllerFilesystems
 
 import (
 	"github.com/gophercloud/gophercloud"
 	"github.com/gophercloud/gophercloud/pagination"
-	inventoryv1 "github.com/gophercloud/gophercloud/starlingx/inventory/v1"
+	common "github.com/gophercloud/gophercloud/starlingx"
 )
 
 const (
@@ -87,7 +87,7 @@ func Update(c *gophercloud.ServiceClient, systemId string, opts []FileSystemOpts
 	requests := make([]interface{}, 0)
 
 	for _, opt := range opts {
-		reqBody, err := inventoryv1.ConvertToPatchMap(opt, inventoryv1.ReplaceOp)
+		reqBody, err := common.ConvertToPatchMap(opt, common.ReplaceOp)
 		if err != nil {
 			r.Err = err
 			return r

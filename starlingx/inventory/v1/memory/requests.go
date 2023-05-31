@@ -1,12 +1,12 @@
 /* SPDX-License-Identifier: Apache-2.0 */
-/* Copyright(c) 2019 Wind River Systems, Inc. */
+/* Copyright(c) 2019-2023 Wind River Systems, Inc. */
 
 package memory
 
 import (
 	"github.com/gophercloud/gophercloud"
 	"github.com/gophercloud/gophercloud/pagination"
-	inventoryv1 "github.com/gophercloud/gophercloud/starlingx/inventory/v1"
+	common "github.com/gophercloud/gophercloud/starlingx"
 )
 
 // Defines the accepted function values for memory configurations.
@@ -73,7 +73,7 @@ func List(c *gophercloud.ServiceClient, hostid string, opts ListOptsBuilder) pag
 // Update accepts an array of MemoryOpts and updates the specified host with the
 // desired Memory configuration.
 func Update(c *gophercloud.ServiceClient, memid string, opts MemoryOpts) (r UpdateResult) {
-	reqBody, err := inventoryv1.ConvertToPatchMap(opts, inventoryv1.ReplaceOp)
+	reqBody, err := common.ConvertToPatchMap(opts, common.ReplaceOp)
 	if err != nil {
 		r.Err = err
 		return r

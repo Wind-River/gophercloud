@@ -5,10 +5,8 @@ package swpatch
 
 import "github.com/gophercloud/gophercloud"
 
-/// api/orchestration/sw-patch/strategy
-
 func rootURL(c *gophercloud.ServiceClient) string {
-	return c.ServiceURL("api", "orchestration","sw-patch", "strategy")
+	return c.ServiceURL("api", "orchestration", "sw-patch", "strategy")
 }
 
 func showURL(c *gophercloud.ServiceClient) string {
@@ -23,10 +21,6 @@ func deleteURL(c *gophercloud.ServiceClient) string {
 	return rootURL(c)
 }
 
-func applyURL(c *gophercloud.ServiceClient) string {
-	return c.ServiceURL("api", "orchestration","sw-patch", "strategy", "apply")
-}
-
-func abortURL(c *gophercloud.ServiceClient) string {
-	return c.ServiceURL("api", "orchestration","sw-patch", "strategy", "abort")
+func actionURL(c *gophercloud.ServiceClient) string {
+	return c.ServiceURL("api", "orchestration", "sw-patch", "strategy", "actions")
 }

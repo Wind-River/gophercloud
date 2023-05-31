@@ -1,12 +1,12 @@
 /* SPDX-License-Identifier: Apache-2.0 */
-/* Copyright(c) 2019 Wind River Systems, Inc. */
+/* Copyright(c) 2019-2023 Wind River Systems, Inc. */
 
 package interfaceNetworks
 
 import (
 	"github.com/gophercloud/gophercloud"
 	"github.com/gophercloud/gophercloud/pagination"
-	inventoryv1 "github.com/gophercloud/gophercloud/starlingx/inventory/v1"
+	common "github.com/gophercloud/gophercloud/starlingx"
 )
 
 type InterfaceNetworkOpts struct {
@@ -63,7 +63,7 @@ func List(c *gophercloud.ServiceClient, hostid string, opts ListOptsBuilder) pag
 // Create accepts a CreateOpts struct and creates a new AddressPool using the
 // values provided.
 func Create(c *gophercloud.ServiceClient, opts InterfaceNetworkOpts) (r CreateResult) {
-	reqBody, err := inventoryv1.ConvertToCreateMap(opts)
+	reqBody, err := common.ConvertToCreateMap(opts)
 	if err != nil {
 		r.Err = err
 		return r

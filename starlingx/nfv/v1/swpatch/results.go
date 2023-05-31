@@ -4,16 +4,9 @@
 package swpatch
 
 import (
+	"encoding/json"
 	"github.com/gophercloud/gophercloud"
-	"github.com/gophercloud/gophercloud/pagination"
 )
-
-// Extract interprets any commonResult as an SwPatch.
-func (r commonResult) Extract() (*SwPatch, error) {
-	var s SwPatch
-	err := r.ExtractInto(&s)
-	return &s, err
-}
 
 // DeleteResult represents the result of an delete operation.
 type DeleteResult struct {
@@ -34,6 +27,10 @@ type SwPatch struct {
 	// StorageApplyType is the apply type for storage hosts.
 	StorageApplyType string `json:"storage-apply-type"`
 
+	// SwiftApplyType is the apply type for storage hosts.
+	// TODO: Delete when updating to system-config-update
+	SwiftApplyType string `json:"swift-apply-type"`
+
 	// WorkerApplyType is the apply type for worker hosts.
 	WorkerApplyType string `json:"worker-apply-type"`
 
@@ -45,10 +42,10 @@ type SwPatch struct {
 	DefaultInstanceAction string `json:"default-instance-action"`
 
 	// The strictness of alarm checks.
-	AlarmRestrictions string `json:"default-instance-action,omitempty"`
+	AlarmRestrictions string `json:"alarm-restrictions,omitempty"`
 
 	// The strictness of alarm checks.
-	State string `json:"default-instance-action"`
+	State string `json:"state"`
 }
 
 // GenerateSwPatch takes a JSON string and converts it into a SwPatch structure.

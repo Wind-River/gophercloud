@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
-/* Copyright(c) 2019 Wind River Systems, Inc. */
+/* Copyright(c) 2023 Wind River Systems, Inc. */
 
-package orchestration
+package v1
 
 /*
 The API endpoint implementations that are supported by the services defined

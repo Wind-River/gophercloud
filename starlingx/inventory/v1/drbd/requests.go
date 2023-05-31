@@ -1,5 +1,5 @@
 /* SPDX-License-Identifier: Apache-2.0 */
-/* Copyright(c) 2019 Wind River Systems, Inc. */
+/* Copyright(c) 2019-2023 Wind River Systems, Inc. */
 
 package drbd
 
@@ -8,7 +8,7 @@ import (
 	"fmt"
 	"github.com/gophercloud/gophercloud"
 	"github.com/gophercloud/gophercloud/pagination"
-	inventoryv1 "github.com/gophercloud/gophercloud/starlingx/inventory/v1"
+	common "github.com/gophercloud/gophercloud/starlingx"
 )
 
 type DRBDOpts struct {
@@ -69,7 +69,7 @@ func Get(c *gophercloud.ServiceClient, id string) (r GetResult) {
 // Update accepts a PatchOpts struct and updates an existing system using the
 // values provided. For more information, see the Create function.
 func Update(c *gophercloud.ServiceClient, id string, opts DRBDOpts) (r UpdateResult) {
-	reqBody, err := inventoryv1.ConvertToPatchMap(opts, inventoryv1.ReplaceOp)
+	reqBody, err := common.ConvertToPatchMap(opts, common.ReplaceOp)
 	if err != nil {
 		r.Err = err
 		return r

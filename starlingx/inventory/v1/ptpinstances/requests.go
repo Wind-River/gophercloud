@@ -1,12 +1,12 @@
 /* SPDX-License-Identifier: Apache-2.0 */
-/* Copyright(c) 2022 Wind River Systems, Inc. */
+/* Copyright(c) 2022-2023 Wind River Systems, Inc. */
 
 package ptpinstances
 
 import (
 	"github.com/gophercloud/gophercloud"
 	"github.com/gophercloud/gophercloud/pagination"
-	inventoryv1 "github.com/gophercloud/gophercloud/starlingx/inventory/v1"
+	common "github.com/gophercloud/gophercloud/starlingx"
 )
 
 const (
@@ -102,7 +102,7 @@ func Get(c *gophercloud.ServiceClient, id string) GetResult {
 // Create accepts a CreateOpts struct and creates a new PTPInstance using the
 // values provided.
 func Create(c *gophercloud.ServiceClient, opts PTPInstanceOpts) (r CreateResult) {
-	reqBody, err := inventoryv1.ConvertToCreateMap(opts)
+	reqBody, err := common.ConvertToCreateMap(opts)
 	if err != nil {
 		r.Err = err
 		return r
@@ -117,7 +117,7 @@ func Create(c *gophercloud.ServiceClient, opts PTPInstanceOpts) (r CreateResult)
 // AddPTPParamToPTPInst accepts a PatchOpts struct and updates an existing 
 // PTPInstance to associate with a PTP parameter
 func AddPTPParamToPTPInst(c *gophercloud.ServiceClient, id string, opts PTPParamToPTPInstOpts) (r UpdateResult) {
-	reqBody, err := inventoryv1.ConvertToPatchMap(opts, inventoryv1.AddOp)
+	reqBody, err := common.ConvertToPatchMap(opts, common.AddOp)
 	if err != nil {
 		r.Err = err
 		return r
@@ -134,7 +134,7 @@ func AddPTPParamToPTPInst(c *gophercloud.ServiceClient, id string, opts PTPParam
 // RemovePTPParamFromPTPInst accepts a PatchOpts struct and updates an existing 
 // PTPInstance to remove a certain PTP parameter
 func RemovePTPParamFromPTPInst(c *gophercloud.ServiceClient, id string, opts PTPParamToPTPInstOpts) (r UpdateResult) {
-	reqBody, err := inventoryv1.ConvertToPatchMap(opts, inventoryv1.RemoveOp)
+	reqBody, err := common.ConvertToPatchMap(opts, common.RemoveOp)
 	if err != nil {
 		r.Err = err
 		return r
@@ -156,7 +156,7 @@ func Delete(c *gophercloud.ServiceClient, id string) (r DeleteResult) {
 
 // Apply applies the PTP instance configuration
 func Apply(c *gophercloud.ServiceClient, opts PTPInstanceOpts) (r ApplyResult) {
-	reqBody, err := inventoryv1.ConvertToCreateMap(opts)
+	reqBody, err := common.ConvertToCreateMap(opts)
 	if err != nil {
 		r.Err = err
 		return r
@@ -213,7 +213,7 @@ func ListHostPTPInstances(c *gophercloud.ServiceClient, hostID string) ([]PTPIns
 // AddPTPInstanceToHost accepts a PatchOpts struct and updates an existing 
 // PTPInstance to associate with a host.
 func AddPTPInstanceToHost(c *gophercloud.ServiceClient, hostID string, opts PTPInstToHostOpts) (r UpdateResult) {
-	reqBody, err := inventoryv1.ConvertToPatchMap(opts, inventoryv1.AddOp)
+	reqBody, err := common.ConvertToPatchMap(opts, common.AddOp)
 	if err != nil {
 		r.Err = err
 		return r
@@ -230,7 +230,7 @@ func AddPTPInstanceToHost(c *gophercloud.ServiceClient, hostID string, opts PTPI
 // RemovePTPInstanceFromHost accepts a PatchOpts struct and remove the PTP instance
 // from a host.
 func RemovePTPInstanceFromHost(c *gophercloud.ServiceClient, hostID string, opts PTPInstToHostOpts) (r UpdateResult) {
-	reqBody, err := inventoryv1.ConvertToPatchMap(opts, inventoryv1.RemoveOp)
+	reqBody, err := common.ConvertToPatchMap(opts, common.RemoveOp)
 	if err != nil {
 		r.Err = err
 		return r

@@ -1,12 +1,12 @@
 /* SPDX-License-Identifier: Apache-2.0 */
-/* Copyright(c) 2019 Wind River Systems, Inc. */
+/* Copyright(c) 2019-2023 Wind River Systems, Inc. */
 
 package addresspools
 
 import (
 	"github.com/gophercloud/gophercloud"
 	"github.com/gophercloud/gophercloud/pagination"
-	inventoryv1 "github.com/gophercloud/gophercloud/starlingx/inventory/v1"
+	common "github.com/gophercloud/gophercloud/starlingx"
 )
 
 type AddressPoolOpts struct {
@@ -73,7 +73,7 @@ func Get(c *gophercloud.ServiceClient, id string) GetResult {
 // Create accepts a CreateOpts struct and creates a new AddressPool using the
 // values provided.
 func Create(c *gophercloud.ServiceClient, opts AddressPoolOpts) (r CreateResult) {
-	reqBody, err := inventoryv1.ConvertToCreateMap(opts)
+	reqBody, err := common.ConvertToCreateMap(opts)
 	if err != nil {
 		r.Err = err
 		return r
@@ -88,7 +88,7 @@ func Create(c *gophercloud.ServiceClient, opts AddressPoolOpts) (r CreateResult)
 // Update accepts a PatchOpts struct and updates an existing addressPool using
 // the values provided. For more information, see the Create function.
 func Update(c *gophercloud.ServiceClient, id string, opts AddressPoolOpts) (r UpdateResult) {
-	reqBody, err := inventoryv1.ConvertToPatchMap(opts, inventoryv1.ReplaceOp)
+	reqBody, err := common.ConvertToPatchMap(opts, common.ReplaceOp)
 	if err != nil {
 		r.Err = err
 		return r

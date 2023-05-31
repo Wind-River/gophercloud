@@ -1,12 +1,12 @@
 /* SPDX-License-Identifier: Apache-2.0 */
-/* Copyright(c) 2022 Wind River Systems, Inc. */
+/* Copyright(c) 2022-2023 Wind River Systems, Inc. */
 
 package ptpinterfaces
 
 import (
 	"github.com/gophercloud/gophercloud"
 	"github.com/gophercloud/gophercloud/pagination"
-	inventoryv1 "github.com/gophercloud/gophercloud/starlingx/inventory/v1"
+	common "github.com/gophercloud/gophercloud/starlingx"
 )
 
 type PTPInterfaceOpts struct {
@@ -111,7 +111,7 @@ func Get(c *gophercloud.ServiceClient, id string) GetResult {
 // Create accepts a CreateOpts struct and creates a new PTPInterface using the
 // values provided.
 func Create(c *gophercloud.ServiceClient, opts PTPInterfaceOpts) (r CreateResult) {
-	reqBody, err := inventoryv1.ConvertToCreateMap(opts)
+	reqBody, err := common.ConvertToCreateMap(opts)
 	if err != nil {
 		r.Err = err
 		return r
@@ -196,7 +196,7 @@ func ListPTPInterfaces(c *gophercloud.ServiceClient) ([]PTPInterface, error) {
 // AddPTPParamToPTPInt accepts a PatchOpts struct and updates an existing PTPInterface to
 // associate with a PTP parameter
 func AddPTPParamToPTPInt(c *gophercloud.ServiceClient, id string, opts PTPParamToPTPIntOpts) (r UpdateResult) {
-	reqBody, err := inventoryv1.ConvertToPatchMap(opts, inventoryv1.AddOp)
+	reqBody, err := common.ConvertToPatchMap(opts, common.AddOp)
 	if err != nil {
 		r.Err = err
 		return r
@@ -214,7 +214,7 @@ func AddPTPParamToPTPInt(c *gophercloud.ServiceClient, id string, opts PTPParamT
 // RemovePTPParamFromPTPInt accepts a PatchOpts struct and updates an existing PTPInterface
 // to remove a certain PTP parameter
 func RemovePTPParamFromPTPInt(c *gophercloud.ServiceClient, id string, opts PTPParamToPTPIntOpts) (r UpdateResult) {
-	reqBody, err := inventoryv1.ConvertToPatchMap(opts, inventoryv1.RemoveOp)
+	reqBody, err := common.ConvertToPatchMap(opts, common.RemoveOp)
 	if err != nil {
 		r.Err = err
 		return r
@@ -231,7 +231,7 @@ func RemovePTPParamFromPTPInt(c *gophercloud.ServiceClient, id string, opts PTPP
 // AddPTPIntToInt accepts a PTPIntToIntOpt to associate the interface
 // with a PTP interface
 func AddPTPIntToInt(c *gophercloud.ServiceClient, interfaceID string, opts PTPIntToIntOpt) (r UpdateResult) {
-	reqBody, err := inventoryv1.ConvertToPatchMap(opts, inventoryv1.AddOp)
+	reqBody, err := common.ConvertToPatchMap(opts, common.AddOp)
 	if err != nil {
 		r.Err = err
 		return r
@@ -248,7 +248,7 @@ func AddPTPIntToInt(c *gophercloud.ServiceClient, interfaceID string, opts PTPIn
 // RemovePTPIntFromInt accepts a PTPIntToIntOpt to associate the interface
 // with a PTP interface
 func RemovePTPIntFromInt(c *gophercloud.ServiceClient, interfaceID string, opts PTPIntToIntOpt) (r UpdateResult) {
-	reqBody, err := inventoryv1.ConvertToPatchMap(opts, inventoryv1.RemoveOp)
+	reqBody, err := common.ConvertToPatchMap(opts, common.RemoveOp)
 	if err != nil {
 		r.Err = err
 		return r

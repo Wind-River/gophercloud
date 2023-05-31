@@ -1,12 +1,12 @@
 /* SPDX-License-Identifier: Apache-2.0 */
-/* Copyright(c) 2020 Wind River Systems, Inc. */
+/* Copyright(c) 2020-2023 Wind River Systems, Inc. */
 
 package serviceparameters
 
 import (
 	"github.com/gophercloud/gophercloud"
 	"github.com/gophercloud/gophercloud/pagination"
-	inventoryv1 "github.com/gophercloud/gophercloud/starlingx/inventory/v1"
+	common "github.com/gophercloud/gophercloud/starlingx"
 )
 
 /* POST /v1/service_parameter/apply  supports an optional "service" request parameter  */
@@ -88,7 +88,7 @@ func Get(c *gophercloud.ServiceClient, id string) GetResult {
 // Create accepts a CreateOpts struct and creates a new ServiceParameter using the
 // values provided.
 func Create(c *gophercloud.ServiceClient, opts ServiceParameterOpts) (r CreateResult) {
-	reqBody, err := inventoryv1.ConvertToCreateMap(opts)
+	reqBody, err := common.ConvertToCreateMap(opts)
 	if err != nil {
 		r.Err = err
 		return r
@@ -102,7 +102,7 @@ func Create(c *gophercloud.ServiceClient, opts ServiceParameterOpts) (r CreateRe
 
 // Apply applies the service parameters through a POST. Optionally a service name can be passed
 func Apply(c *gophercloud.ServiceClient, opts ServiceApplyOpts) (r ApplyResult) {
-	reqBody, err := inventoryv1.ConvertToCreateMap(opts)
+	reqBody, err := common.ConvertToCreateMap(opts)
 	if err != nil {
 		r.Err = err
 		return r
@@ -116,7 +116,7 @@ func Apply(c *gophercloud.ServiceClient, opts ServiceApplyOpts) (r ApplyResult) 
 // Update accepts a PatchOpts struct and updates an existing serviceParameter using
 // the values provided. For more information, see the Create function.
 func Update(c *gophercloud.ServiceClient, id string, opts ServiceParameterPatchOpts) (r UpdateResult) {
-	reqBody, err := inventoryv1.ConvertToPatchMap(opts, inventoryv1.ReplaceOp)
+	reqBody, err := common.ConvertToPatchMap(opts, common.ReplaceOp)
 	if err != nil {
 		r.Err = err
 		return r
