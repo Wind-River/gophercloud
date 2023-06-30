@@ -5,6 +5,7 @@ package swpatch
 
 import (
 	"encoding/json"
+
 	"github.com/gophercloud/gophercloud"
 	common "github.com/gophercloud/gophercloud/starlingx"
 )
@@ -16,13 +17,13 @@ type StrategyActionOpts struct {
 }
 
 type SwPatchOpts struct {
-	ControllerApplyType   string `json:"controller-apply-type"`
-	StorageApplyType      string `json:"storage-apply-type"`
-	WorkerApplyType       string `json:"worker-apply-type"`
-	SwiftApplyType 		  string `json:"swift-apply-type"` // TODO: Delete when updating to system-config-update
-	MaxParallerWorkers    int    `json:"max-parallel-worker-hosts,omitempty"`
-	DefaultInstanceAction string `json:"default-instance-action"`
-	AlarmRestrictions     string `json:"alarm-restrictions,omitempty"`
+	ControllerApplyType   string `json:"controller-apply-type" mapstructure:"controller-apply-type"`
+	StorageApplyType      string `json:"storage-apply-type" mapstructure:"storage-apply-type"`
+	WorkerApplyType       string `json:"worker-apply-type" mapstructure:"worker-apply-type"`
+	SwiftApplyType        string `json:"swift-apply-type" mapstructure:"swift-apply-type"` // TODO: Delete when updating to system-config-update
+	MaxParallerWorkers    int    `json:"max-parallel-worker-hosts,omitempty" mapstructure:"max-parallel-worker-hosts"`
+	DefaultInstanceAction string `json:"default-instance-action" mapstructure:"default-instance-action"`
+	AlarmRestrictions     string `json:"alarm-restrictions,omitempty" mapstructure:"alarm-restrictions,omitempty"`
 }
 
 func performRequest(c *gophercloud.ServiceClient, url string, reqBody interface{}) (*SwPatch, error) {
@@ -80,7 +81,11 @@ func Create(c *gophercloud.ServiceClient, opts SwPatchOpts) (*SwPatch, error) {
 
 // Delete current strategy.
 func Delete(c *gophercloud.ServiceClient) (r DeleteResult) {
-	_, r.Err = c.Delete(deleteURL(c), nil)
+	// swpatch DELETE needs empty body in json
+	m := make(map[string]interface{})
+	_, r.Err = c.Delete(deleteURL(c), &gophercloud.RequestOpts{
+		JSONBody: m,
+	})
 	return r
 }
 
