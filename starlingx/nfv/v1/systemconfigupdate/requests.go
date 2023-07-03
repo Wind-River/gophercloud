@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright(c) 2023 Wind River Systems, Inc. */
 
-package swpatch
+package systemconfigupdate
 
 import (
 	"encoding/json"
@@ -10,23 +10,22 @@ import (
 	common "github.com/gophercloud/gophercloud/starlingx"
 )
 
-/* POST /api/orchestration/sw-patch/strategy/apply  supports an optional "stage-id" request parameter  */
+/* POST /api/orchestration/system-config-update/strategy/apply  supports an optional "stage-id" request parameter  */
 type StrategyActionOpts struct {
 	Action  *string `json:"action" mapstructure:"action"`
 	StageID *string `json:"stage-id,omitempty" mapstructure:"stage-id"`
 }
 
-type SwPatchOpts struct {
+type SystemConfigUpdateOpts struct {
 	ControllerApplyType   string `json:"controller-apply-type" mapstructure:"controller-apply-type"`
 	StorageApplyType      string `json:"storage-apply-type" mapstructure:"storage-apply-type"`
 	WorkerApplyType       string `json:"worker-apply-type" mapstructure:"worker-apply-type"`
-	SwiftApplyType        string `json:"swift-apply-type" mapstructure:"swift-apply-type"`
 	MaxParallerWorkers    int    `json:"max-parallel-worker-hosts,omitempty" mapstructure:"max-parallel-worker-hosts"`
 	DefaultInstanceAction string `json:"default-instance-action" mapstructure:"default-instance-action"`
 	AlarmRestrictions     string `json:"alarm-restrictions,omitempty" mapstructure:"alarm-restrictions,omitempty"`
 }
 
-func performRequest(c *gophercloud.ServiceClient, url string, reqBody interface{}) (*SwPatch, error) {
+func performRequest(c *gophercloud.ServiceClient, url string, reqBody interface{}) (*SystemConfigUpdate, error) {
 	var respBody map[string]interface{}
 	_, err := c.Post(url, reqBody, &respBody, &gophercloud.RequestOpts{
 		OkCodes: []int{200, 201, 202},
@@ -40,15 +39,15 @@ func performRequest(c *gophercloud.ServiceClient, url string, reqBody interface{
 		return nil, err
 	}
 
-	swPatch, err := GenerateSwPatch(string(respJSON))
+	scUpdate, err := GenerateSCUpdate(string(respJSON))
 	if err != nil {
 		return nil, err
 	}
 
-	return swPatch, nil
+	return scUpdate, nil
 }
 
-func Show(c *gophercloud.ServiceClient) (*SwPatch, error) {
+func Show(c *gophercloud.ServiceClient) (*SystemConfigUpdate, error) {
 	var respBody map[string]interface{}
 	_, err := c.Get(showURL(c), &respBody, nil)
 	if err != nil {
@@ -60,17 +59,17 @@ func Show(c *gophercloud.ServiceClient) (*SwPatch, error) {
 		return nil, err
 	}
 
-	swPatch, err := GenerateSwPatch(string(respJSON))
+	scUpdate, err := GenerateSCUpdate(string(respJSON))
 	if err != nil {
 		return nil, err
 	}
 
-	return swPatch, nil
+	return scUpdate, nil
 }
 
-// Create accepts a SwPatchOpts struct and creates a new SwPatch using the
+// Create accepts a SystemConfigUpdateOpts struct and creates a new SystemConfigUpdate using the
 // values provided.
-func Create(c *gophercloud.ServiceClient, opts SwPatchOpts) (*SwPatch, error) {
+func Create(c *gophercloud.ServiceClient, opts SystemConfigUpdateOpts) (*SystemConfigUpdate, error) {
 	reqBody, err := common.ConvertToCreateMap(opts)
 	if err != nil {
 		return nil, err
@@ -81,7 +80,7 @@ func Create(c *gophercloud.ServiceClient, opts SwPatchOpts) (*SwPatch, error) {
 
 // Delete current strategy.
 func Delete(c *gophercloud.ServiceClient) (r DeleteResult) {
-	// swpatch DELETE needs empty body in json
+	// systemconfigupdate DELETE needs empty body in json
 	m := make(map[string]interface{})
 	_, r.Err = c.Delete(deleteURL(c), &gophercloud.RequestOpts{
 		JSONBody: m,
@@ -90,7 +89,7 @@ func Delete(c *gophercloud.ServiceClient) (r DeleteResult) {
 }
 
 // Apply or Abort current strategy.
-func ActionStrategy(c *gophercloud.ServiceClient, opts StrategyActionOpts) (*SwPatch, error) {
+func ActionStrategy(c *gophercloud.ServiceClient, opts StrategyActionOpts) (*SystemConfigUpdate, error) {
 	reqBody, err := common.ConvertToCreateMap(opts)
 	if err != nil {
 		return nil, err

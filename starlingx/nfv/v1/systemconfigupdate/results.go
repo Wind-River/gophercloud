@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright(c) 2023 Wind River Systems, Inc. */
 
-package swpatch
+package systemconfigupdate
 
 import (
 	"encoding/json"
@@ -14,9 +14,9 @@ type DeleteResult struct {
 	gophercloud.ErrResult
 }
 
-// SwPatch defines the data associated to a single Sw Patch Strategy instance.
-type SwPatch struct {
-	// ID is the generated unique UUID for the Sw Patch Strategy
+// SystemConfigUpdateStrategy defines the data associated to a single System Config Update Strategy instance.
+type SystemConfigUpdate struct {
+	// ID is the generated unique UUID for the System Config Update Strategy
 	ID string `json:"uuid"`
 
 	// StrategyName is the name of the strategy.
@@ -27,9 +27,6 @@ type SwPatch struct {
 
 	// StorageApplyType is the apply type for storage hosts.
 	StorageApplyType string `json:"storage-apply-type"`
-
-	// SwiftApplyType is the apply type for storage hosts.
-	SwiftApplyType string `json:"swift-apply-type"`
 
 	// WorkerApplyType is the apply type for worker hosts.
 	WorkerApplyType string `json:"worker-apply-type"`
@@ -48,15 +45,15 @@ type SwPatch struct {
 	State string `json:"state"`
 }
 
-// GenerateSwPatch takes a JSON string and converts it into a SwPatch structure.
-// It returns a pointer to SwPatch and an error if the JSON parsing fails.
-func GenerateSwPatch(jsonData string) (*SwPatch, error) {
-	var data map[string]SwPatch
+// GenerateSCUpdate takes a JSON string and converts it into a SystemConfigUpdate structure.
+// It returns a pointer to SystemConfigUpdate and an error if the JSON parsing fails.
+func GenerateSCUpdate(jsonData string) (*SystemConfigUpdate, error) {
+	var data map[string]SystemConfigUpdate
 	err := json.Unmarshal([]byte(jsonData), &data)
 	if err != nil {
 		return nil, err
 	}
 
-	swPatch := data["strategy"]
-	return &swPatch, nil
+	scUpdate := data["strategy"]
+	return &scUpdate, nil
 }
