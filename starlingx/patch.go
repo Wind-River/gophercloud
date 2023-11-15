@@ -47,16 +47,22 @@ func ConvertToPatchMap(obj interface{}, op PatchOp) ([]interface{}, error) {
 			continue
 		}
 
-		value := result[k]
+		var value interface{}
 		if reflectValue.Kind() == reflect.Ptr && reflectValue.Elem().Kind() == reflect.Slice {
 			// The patch operation at the system API does not support arrays
 			// therefore if we find one in the set of attributes that need to
 			// change then automatically convert it to a comma separate list.
-			value = strings.Join(*value.(*[]string), ",")
-			if value == "" {
+			sliceValue := reflectValue.Elem()
+			value = sliceValue.Interface()
+			if sliceValue.Len() > 0 && sliceValue.Index(0).Kind() == reflect.String {
+				// Convert slice of strings to comma-separated string
+				value = strings.Join(value.([]string), ",")
+			} else {
 				// The system API expects empty list as "none"
 				value = "none"
 			}
+		} else {
+			value = result[k]
 		}
 
 		p := map[string]interface{}{
