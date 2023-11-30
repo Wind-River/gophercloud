@@ -1,5 +1,5 @@
 /* SPDX-License-Identifier: Apache-2.0 */
-/* Copyright(c) 2019 Wind River Systems, Inc. */
+/* Copyright(c) 2019-2023 Wind River Systems, Inc. */
 
 package addresspools
 
@@ -49,6 +49,9 @@ type AddressPool struct {
 
 	// Network is the IPv4 or IPv6 network address value.
 	Network string `json:"network"`
+
+	// FloatingAddress is the floating IPv4 or IPv6 network address value.
+	FloatingAddress string `json:"floating_address,omitempty"`
 
 	// Prefix is the numeric prefix length of the network.
 	Prefix int `json:"prefix"`
