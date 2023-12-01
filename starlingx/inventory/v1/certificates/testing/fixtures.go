@@ -5,10 +5,11 @@ package testing
 
 import (
 	"fmt"
-	"github.com/gophercloud/gophercloud/starlingx/inventory/v1/certificates"
-	"github.com/gophercloud/gophercloud/testhelper/client"
 	"net/http"
 	"testing"
+
+	"github.com/gophercloud/gophercloud/starlingx/inventory/v1/certificates"
+	"github.com/gophercloud/gophercloud/testhelper/client"
 
 	th "github.com/gophercloud/gophercloud/testhelper"
 )
@@ -69,7 +70,7 @@ const CertificateSingleBody = `
 
 const CertificateCreateResponse = `
 {
-  "certificates": {
+  "certificates": [{
   "certtype": "ssl_ca",
   "details": null,
   "expiry_date": "2021-06-05T20:28:20+00:00",
@@ -77,7 +78,7 @@ const CertificateCreateResponse = `
   "signature": "ssl_ca_10886226602156394257",
   "start_date": "2018-08-16T20:28:20+00:00",
   "uuid": "2a8fc6dc-a056-496e-8b08-65b0ae34b36f"
-  },
+  }],
   "error": null,
   "body": null
 }
@@ -109,6 +110,10 @@ func HandleCertificateCreationSuccessfully(t *testing.T, response string) {
 Content-Disposition: form-data; name="mode"
 
 ssl_ca
+--f8cf998387ef2df13f3169e0aa11bd03c5e1487f1df63ddca5552f1bb854
+Content-Disposition: form-data; name="force"
+
+true
 --f8cf998387ef2df13f3169e0aa11bd03c5e1487f1df63ddca5552f1bb854
 Content-Disposition: form-data; name="file"; filename="certificate.pem"
 Content-Type: application/octet-stream

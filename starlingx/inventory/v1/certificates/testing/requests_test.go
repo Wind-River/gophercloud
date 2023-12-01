@@ -8,8 +8,9 @@ import (
 	"github.com/gophercloud/gophercloud/starlingx/inventory/v1/certificates"
 	"github.com/gophercloud/gophercloud/testhelper/client"
 
-	th "github.com/gophercloud/gophercloud/testhelper"
 	"testing"
+
+	th "github.com/gophercloud/gophercloud/testhelper"
 )
 
 func TestListCertificates(t *testing.T) {
@@ -79,5 +80,7 @@ func TestCreateCertificate(t *testing.T) {
 	}).Extract()
 	th.AssertNoErr(t, err)
 
-	th.CheckDeepEquals(t, CertificateHerp, *actual)
+	for _, actualCert := range actual {
+		th.CheckDeepEquals(t, CertificateHerp, *actualCert)
+	}
 }
