@@ -107,7 +107,7 @@ func HandleFileSystemListSuccessfully(t *testing.T) {
 		th.TestMethod(t, r, "GET")
 		th.TestHeader(t, r, "X-Auth-Token", client.TokenID)
 		w.Header().Add("Content-Type", "application/json")
-		fmt.Fprintf(w, FileSystemListBody)
+		fmt.Fprint(w, FileSystemListBody)
 	})
 }
 
@@ -116,7 +116,7 @@ func HandleFileSystemGetSuccessfully(t *testing.T) {
 		th.TestMethod(t, r, "GET")
 		th.TestHeader(t, r, "X-Auth-Token", client.TokenID)
 		w.Header().Add("Content-Type", "application/json")
-		fmt.Fprintf(w, FileSystemSingleBody)
+		fmt.Fprint(w, FileSystemSingleBody)
 	})
 }
 
@@ -127,7 +127,7 @@ func HandleFileSystemUpdateSuccessfully(t *testing.T) {
 		th.TestHeader(t, r, "Accept", "application/json")
 		th.TestHeader(t, r, "Content-Type", "application/json")
 		th.TestJSONRequest(t, r, `[ [ { "op": "replace", "path": "/name", "value": "Derp"  }, { "op": "replace", "path": "/size", "value": 50 } ] ]`)
-		fmt.Fprintf(w, FileSystemSingleBody)
+		fmt.Fprint(w, FileSystemSingleBody)
 	})
 }
 
@@ -152,6 +152,6 @@ func HandleFileSystemCreationSuccessfully(t *testing.T, response string) {
 
 		w.WriteHeader(http.StatusAccepted)
 		w.Header().Add("Content-Type", "application/json")
-		fmt.Fprintf(w, response)
+		fmt.Fprint(w, response)
 	})
 }

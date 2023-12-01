@@ -118,7 +118,7 @@ func HandleDiskPartitionListSuccessfully(t *testing.T) {
 		th.TestMethod(t, r, "GET")
 		th.TestHeader(t, r, "X-Auth-Token", client.TokenID)
 		w.Header().Add("Content-Type", "application/json")
-		fmt.Fprintf(w, DiskPartitionListBody)
+		fmt.Fprint(w, DiskPartitionListBody)
 	})
 }
 
@@ -128,7 +128,7 @@ func HandleDiskPartitionGetSuccessfully(t *testing.T) {
 		th.TestHeader(t, r, "X-Auth-Token", client.TokenID)
 		th.TestHeader(t, r, "Accept", "application/json")
 
-		fmt.Fprintf(w, DiskPartitionSingleBody)
+		fmt.Fprint(w, DiskPartitionSingleBody)
 	})
 }
 
@@ -145,7 +145,7 @@ func HandleDiskPartitionCreationSuccessfully(t *testing.T, response string) {
 
 		w.WriteHeader(http.StatusAccepted)
 		w.Header().Add("Content-Type", "application/json")
-		fmt.Fprintf(w, response)
+		fmt.Fprint(w, response)
 	})
 }
 
@@ -172,7 +172,7 @@ func HandleDiskPartitionUpdateSuccessfully(t *testing.T) {
             "value": 409600
           } ]`)
 
-		fmt.Fprintf(w, DiskPartitionSingleBody)
+		fmt.Fprint(w, DiskPartitionSingleBody)
 	})
 }
 

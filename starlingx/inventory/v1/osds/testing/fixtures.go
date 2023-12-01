@@ -128,7 +128,7 @@ func HandleOSDListSuccessfully(t *testing.T) {
 		th.TestMethod(t, r, "GET")
 		th.TestHeader(t, r, "X-Auth-Token", client.TokenID)
 		w.Header().Add("Content-Type", "application/json")
-		fmt.Fprintf(w, OSDListBody)
+		fmt.Fprint(w, OSDListBody)
 	})
 }
 
@@ -138,7 +138,7 @@ func HandleOSDGetSuccessfully(t *testing.T) {
 		th.TestHeader(t, r, "X-Auth-Token", client.TokenID)
 		th.TestHeader(t, r, "Accept", "application/json")
 
-		fmt.Fprintf(w, OSDSingleBody)
+		fmt.Fprint(w, OSDSingleBody)
 	})
 }
 
@@ -166,7 +166,7 @@ func HandleOSDCreationSuccessfully(t *testing.T, response string) {
 
 		w.WriteHeader(http.StatusAccepted)
 		w.Header().Add("Content-Type", "application/json")
-		fmt.Fprintf(w, response)
+		fmt.Fprint(w, response)
 	})
 }
 
@@ -180,6 +180,6 @@ func HandleOSDUpdateSuccessfully(t *testing.T) {
 			{"op": "replace", "path": "/journal_location", "value": "bb5c7623-0eb2-4581-9942-7abac4a4be86"},
           	{"op": "replace", "path": "/journal_size_mib", "value": 2097152}]`)
 
-		fmt.Fprintf(w, OSDSingleBody)
+		fmt.Fprint(w, OSDSingleBody)
 	})
 }
