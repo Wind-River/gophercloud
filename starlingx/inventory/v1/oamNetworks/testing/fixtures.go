@@ -19,7 +19,7 @@ var (
 	OAMNetworkHerp = oamNetworks.OAMNetwork{
 		UUID:           "fd5aaa82-b503-40e2-af45-9fc4411df7a0",
 		OAMSubnet:      "10.10.20.0/24",
-		OAMGatewayIP:   "10.10.20.1",
+		OAMGatewayIP:   nil,
 		OAMFloatingIP:  "10.10.20.2",
 		OAMC0IP:        "10.10.20.3",
 		OAMC1IP:        "10.10.20.4",
@@ -43,7 +43,7 @@ var (
 	OAMNetworkDerp = oamNetworks.OAMNetwork{
 		UUID:          "727bd796-070f-40c2-8b9b-7ed674fd0fe7",
 		OAMSubnet:     "10.10.20.0/24",
-		OAMGatewayIP:  "10.10.20.1",
+		OAMGatewayIP:  nil,
 		OAMFloatingIP: "10.10.20.5",
 		OAMC0IP:       "10.10.20.3",
 		OAMC1IP:       "10.10.20.4",
@@ -56,7 +56,7 @@ const OAMNetworkListBody = `
 		{
 			"uuid": "fd5aaa82-b503-40e2-af45-9fc4411df7a0",
 			"oam_subnet": "10.10.20.0/24",
-			"oam_gateway_ip": "10.10.20.1",
+			"oam_gateway_ip": null,
 			"oam_floating_ip": "10.10.20.2",
 			"oam_c0_ip": "10.10.20.3",
 			"oam_c1_ip": "10.10.20.4",
@@ -84,7 +84,7 @@ const SingleOAMNetworkBody = `
 {
     "uuid": "727bd796-070f-40c2-8b9b-7ed674fd0fe7",
 	"oam_subnet": "10.10.20.0/24",
-	"oam_gateway_ip": "10.10.20.1",
+	"oam_gateway_ip": null,
 	"oam_floating_ip": "10.10.20.5",
 	"oam_c0_ip": "10.10.20.3",
 	"oam_c1_ip": "10.10.20.4"

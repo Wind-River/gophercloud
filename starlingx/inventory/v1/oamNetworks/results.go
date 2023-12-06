@@ -48,7 +48,7 @@ type OAMNetwork struct {
 	OAMSubnet string `json:"oam_subnet"`
 
 	// Represent the oam gateway IP.
-	OAMGatewayIP string `json:"oam_gateway_ip"`
+	OAMGatewayIP *string `json:"oam_gateway_ip"`
 
 	// Represent the oam floating IP.
 	OAMFloatingIP string `json:"oam_floating_ip"`
