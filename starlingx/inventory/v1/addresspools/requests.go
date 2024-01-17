@@ -1,5 +1,5 @@
 /* SPDX-License-Identifier: Apache-2.0 */
-/* Copyright(c) 2019-2023 Wind River Systems, Inc. */
+/* Copyright(c) 2019-2024 Wind River Systems, Inc. */
 
 package addresspools
 
@@ -10,13 +10,15 @@ import (
 )
 
 type AddressPoolOpts struct {
-	Name            *string     `json:"name,omitempty" mapstructure:"name"`
-	Network         *string     `json:"network,omitempty" mapstructure:"network"`
-	FloatingAddress *string     `json:"floating_address,omitempty" mapstructure:"floating_address,omitempty"`
-	Prefix          *int        `json:"prefix,omitempty" mapstructure:"prefix"`
-	Gateway         *string     `json:"gateway_address,omitempty" mapstructure:"gateway_address,omitempty"`
-	Order           *string     `json:"order,omitempty" mapstructure:"order"`
-	Ranges          *[][]string `json:"ranges,omitempty" mapstructure:"ranges"`
+	Name               *string     `json:"name,omitempty" mapstructure:"name"`
+	Network            *string     `json:"network,omitempty" mapstructure:"network"`
+	FloatingAddress    *string     `json:"floating_address,omitempty" mapstructure:"floating_address,omitempty"`
+	Controller0Address *string     `json:"controller0_address,omitempty" mapstructure:"controller0_address,omitempty"`
+	Controller1Address *string     `json:"controller1_address,omitempty" mapstructure:"controller1_address,omitempty"`
+	Prefix             *int        `json:"prefix,omitempty" mapstructure:"prefix"`
+	Gateway            *string     `json:"gateway_address,omitempty" mapstructure:"gateway_address,omitempty"`
+	Order              *string     `json:"order,omitempty" mapstructure:"order"`
+	Ranges             *[][]string `json:"ranges,omitempty" mapstructure:"ranges"`
 }
 
 // ListOptsBuilder allows extensions to add additional parameters to the

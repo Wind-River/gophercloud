@@ -14,22 +14,28 @@ import (
 
 var (
 	AddressPoolHerp = addresspools.AddressPool{
-		ID:      "727bd796-070f-40c2-8b9b-7ed674fd0fe7",
-		Name:    "management",
-		Prefix:  24,
-		Network: "192.168.204.0",
-		Gateway: nil,
-		Order:   "random",
-		Ranges:  [][]string{{"192.268.206.100", "192.168.204.254"}},
+		ID:                 "727bd796-070f-40c2-8b9b-7ed674fd0fe7",
+		Name:               "management",
+		Prefix:             24,
+		Network:            "192.168.204.0",
+		Gateway:            nil,
+		Order:              "random",
+		Ranges:             [][]string{{"192.268.206.100", "192.168.204.254"}},
+		FloatingAddress:    "192.168.204.2",
+		Controller0Address: "192.168.204.3",
+		Controller1Address: "192.168.204.4",
 	}
 	AddressPoolDerp = addresspools.AddressPool{
-		ID:      "123914e3-36e4-41a8-a702-d9f6e54d7140",
-		Name:    "pxeboot",
-		Prefix:  24,
-		Network: "169.254.202.0",
-		Gateway: nil,
-		Order:   "random",
-		Ranges:  [][]string{{"169.254.202.1", "169.254.202.254"}},
+		ID:                 "123914e3-36e4-41a8-a702-d9f6e54d7140",
+		Name:               "pxeboot",
+		Prefix:             24,
+		Network:            "169.254.202.0",
+		Gateway:            nil,
+		Order:              "random",
+		Ranges:             [][]string{{"169.254.202.1", "169.254.202.254"}},
+		FloatingAddress:    "169.254.202.2",
+		Controller0Address: "169.254.202.3",
+		Controller1Address: "169.254.202.4",
 	}
 )
 
@@ -46,6 +52,9 @@ const AddressPoolListBody = `
                     "192.168.204.254"
                 ]
             ],
+			"floating_address": "192.168.204.2",
+			"controller0_address": "192.168.204.3",
+			"controller1_address": "192.168.204.4",
             "prefix": 24,
             "order": "random",
             "uuid": "727bd796-070f-40c2-8b9b-7ed674fd0fe7"
@@ -60,6 +69,9 @@ const AddressPoolListBody = `
                     "169.254.202.254"
                 ]
             ],
+			"floating_address": "169.254.202.2",
+			"controller0_address": "169.254.202.3",
+			"controller1_address": "169.254.202.4",
             "prefix": 24,
             "order": "random",
             "uuid": "123914e3-36e4-41a8-a702-d9f6e54d7140"
@@ -79,6 +91,9 @@ const AddressPoolSingleBody = `
 			"169.254.202.254"
 		]
 	],
+	"floating_address": "169.254.202.2",
+	"controller0_address": "169.254.202.3",
+	"controller1_address": "169.254.202.4",
 	"prefix": 24,
 	"order": "random",
 	"uuid": "123914e3-36e4-41a8-a702-d9f6e54d7140"
@@ -125,6 +140,9 @@ func HandleAddressPoolCreationSuccessfully(t *testing.T, response string) {
 					"169.254.202.254"
 				]
 			],
+			"floating_address": "169.254.202.2",
+			"controller0_address": "169.254.202.3",
+			"controller1_address": "169.254.202.4",		
 			"prefix": 24,
 			"order": "random"
 		}`)

@@ -79,13 +79,19 @@ func TestCreateAddressPool(t *testing.T) {
 	network := "169.254.202.0"
 	order := "random"
 	ranges := [][]string{{"169.254.202.1", "169.254.202.254"}}
-
+	floating_addr := "169.254.202.2"
+	c0_addr := "169.254.202.3"
+	c1_addr := "169.254.202.4"
+	
 	actual, err := addresspools.Create(client.ServiceClient(), addresspools.AddressPoolOpts{
-		Name:    &name,
-		Prefix:  &prefix,
-		Network: &network,
-		Order:   &order,
-		Ranges:  &ranges,
+		Name:               &name,
+		Prefix:             &prefix,
+		Network:            &network,
+		Order:              &order,
+		Ranges:             &ranges,
+		FloatingAddress:    &floating_addr,
+		Controller0Address: &c0_addr,
+		Controller1Address: &c1_addr,
 	}).Extract()
 	th.AssertNoErr(t, err)
 
