@@ -11,9 +11,9 @@ import (
 
 type NetworkAddressPoolOpts struct {
 	NetworkUUID     *string `json:"network_uuid,omitempty" mapstructure:"network_uuid"`
-	AddressPoolUUID *string `json:"addresspool_uuid,omitempty" mapstructure:"addresspool_uuid"`
+	AddressPoolUUID *string `json:"address_pool_uuid,omitempty" mapstructure:"address_pool_uuid"`
 	NetworkName     *string `json:"network_name,omitempty" mapstructure:"network_name"`
-	AddressPoolName *string `json:"addresspool_name,omitempty" mapstructure:"addresspool_name"`
+	AddressPoolName *string `json:"address_pool_name,omitempty" mapstructure:"address_pool_name"`
 }
 
 // ListOptsBuilder allows extensions to add additional parameters to the

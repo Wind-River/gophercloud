@@ -37,16 +37,16 @@ const NetworkAddressPoolListBody = `
         {
 			"uuid": "11111111-a6e5-425e-9317-995da88d6694",
 			"network_uuid": "11111111-0000-425e-9317-995da88d6694",
-			"addresspool_uuid": "11111111-1111-425e-9317-995da88d6694",
+			"address_pool_uuid": "11111111-1111-425e-9317-995da88d6694",
 			"network_name": "oam",
-			"addresspool_name": "oam-ipv4"
+			"address_pool_name": "oam-ipv4"
 		},
 		{
 			"uuid": "22222222-a6e5-425e-9317-995da88d6694",
 			"network_uuid": "22222222-0000-425e-9317-995da88d6694",
-			"addresspool_uuid": "22222222-1111-425e-9317-995da88d6694",
+			"address_pool_uuid": "22222222-1111-425e-9317-995da88d6694",
 			"network_name": "oam",
-			"addresspool_name": "oam-ipv6"
+			"address_pool_name": "oam-ipv6"
 		}
     ]
 }
@@ -56,9 +56,9 @@ const SingleNetworkAddressPoolBody = `
 {
 	"uuid": "11111111-a6e5-425e-9317-995da88d6694",
 	"network_uuid": "11111111-0000-425e-9317-995da88d6694",
-	"addresspool_uuid": "11111111-1111-425e-9317-995da88d6694",
+	"address_pool_uuid": "11111111-1111-425e-9317-995da88d6694",
 	"network_name": "oam",
-	"addresspool_name": "oam-ipv4"
+	"address_pool_name": "oam-ipv4"
 }
 `
 
@@ -96,8 +96,8 @@ func HandleNetworkAddressPoolCreationSuccessfully(t *testing.T, response string)
 		th.TestJSONRequest(t, r, `{
           "network_uuid": "11111111-0000-425e-9317-995da88d6694",
           "network_name": "oam",
-          "addresspool_uuid": "11111111-1111-425e-9317-995da88d6694",
-          "addresspool_name": "oam-ipv4"
+          "address_pool_uuid": "11111111-1111-425e-9317-995da88d6694",
+          "address_pool_name": "oam-ipv4"
         }`)
 
 		w.WriteHeader(http.StatusAccepted)

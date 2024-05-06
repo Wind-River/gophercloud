@@ -43,13 +43,13 @@ type NetworkAddressPool struct {
 	NetworkUUID string `json:"network_uuid"`
 
 	// AddressPoolUUID is the UUID of the address pool resource
-	AddressPoolUUID string `json:"addresspool_uuid"`
+	AddressPoolUUID string `json:"address_pool_uuid"`
 
 	// NetworkName is the name of network resource
 	NetworkName string `json:"network_name"`
 
 	// AddressPoolName is the name of the address pool resource
-	AddressPoolName string `json:"addresspool_name"`
+	AddressPoolName string `json:"address_pool_name"`
 }
 
 // NetworkAddressPool is the page returned by a pager when traversing over a
