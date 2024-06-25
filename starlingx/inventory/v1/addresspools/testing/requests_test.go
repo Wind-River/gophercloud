@@ -113,9 +113,10 @@ func TestUpdateAddressPool(t *testing.T) {
 	HandleAddressPoolUpdateSuccessfully(t)
 
 	name := "Changed"
+	ranges := [][]string{{"169.254.202.1", "169.254.202.200"}}
 	actual, err := addresspools.Update(client.ServiceClient(),
 		"123914e3-36e4-41a8-a702-d9f6e54d7140",
-		addresspools.AddressPoolOpts{Name: &name}).Extract()
+		addresspools.AddressPoolOpts{Name: &name, Ranges: &ranges}).Extract()
 	if err != nil {
 		t.Fatalf("Unexpected Update error: %v", err)
 	}

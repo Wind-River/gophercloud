@@ -57,6 +57,10 @@ func ConvertToPatchMap(obj interface{}, op PatchOp) ([]interface{}, error) {
 			if sliceValue.Len() > 0 && sliceValue.Index(0).Kind() == reflect.String {
 				// Convert slice of strings to comma-separated string
 				value = strings.Join(value.([]string), ",")
+			} else if sliceValue.Len() > 0 && sliceValue.Index(0).Kind() == reflect.Slice {
+				// "Ranges" in case of addresspool API is a nested list and system API
+				// supports nested list at least in this case.
+				value = result[k]
 			} else {
 				// The system API expects empty list as "none"
 				value = "none"

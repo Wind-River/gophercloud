@@ -159,7 +159,7 @@ func HandleAddressPoolUpdateSuccessfully(t *testing.T) {
 		th.TestHeader(t, r, "X-Auth-Token", client.TokenID)
 		th.TestHeader(t, r, "Accept", "application/json")
 		th.TestHeader(t, r, "Content-Type", "application/json")
-		th.TestJSONRequest(t, r, `[ { "op": "replace", "path": "/name", "value": "Changed" } ]`)
+		th.TestJSONRequest(t, r, `[ { "op": "replace", "path": "/name", "value": "Changed" }, {"op": "replace", "path": "/ranges", "value": [["169.254.202.1", "169.254.202.200"]]} ]`)
 
 		fmt.Fprintf(w, AddressPoolSingleBody)
 	})
