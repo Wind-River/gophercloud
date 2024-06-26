@@ -1,5 +1,5 @@
 /* SPDX-License-Identifier: Apache-2.0 */
-/* Copyright(c) 2019-2023 Wind River Systems, Inc. */
+/* Copyright(c) 2019-2024 Wind River Systems, Inc. */
 
 package controllerFilesystems
 
@@ -122,4 +122,24 @@ func ListFileSystems(c *gophercloud.ServiceClient) ([]FileSystem, error) {
 	}
 
 	return objs, err
+}
+
+// Create accepts a CreateOpts struct and creates a new controller filesystem using the
+// values provided.
+func Create(client *gophercloud.ServiceClient, opts FileSystemOpts) (r CreateResult) {
+	reqBody, err := common.ConvertToCreateMap(opts)
+	if err != nil {
+		r.Err = err
+		return r
+	}
+	_, r.Err = client.Post(createURL(client), reqBody, &r.Body, &gophercloud.RequestOpts{
+		OkCodes: []int{200, 201, 202},
+	})
+	return r
+}
+
+// Delete accepts a unique ID and deletes the controller filesystem associated with it.
+func Delete(c *gophercloud.ServiceClient, id string) (r DeleteResult) {
+	_, r.Err = c.Delete(deleteURL(c, id), nil)
+	return r
 }

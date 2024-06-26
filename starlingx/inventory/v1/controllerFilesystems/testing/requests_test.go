@@ -1,5 +1,5 @@
 /* SPDX-License-Identifier: Apache-2.0 */
-/* Copyright(c) 2019 Wind River Systems, Inc. */
+/* Copyright(c) 2019,2024 Wind River Systems, Inc. */
 
 package testing
 
@@ -67,4 +67,32 @@ func TestGetFileSystem(t *testing.T) {
 	}
 
 	th.CheckDeepEquals(t, FileSystemDerp, *actual)
+}
+
+func TestCreateControllerFS(t *testing.T) {
+	th.SetupHTTP()
+	defer th.TeardownHTTP()
+
+	HandleControllerFSCreationSuccessfully(t, ControllerFSCephFloatSingleBody)
+	name := "ceph-float"
+	size := 20
+	options := controllerFilesystems.FileSystemOpts{
+		Size: size,
+		Name: name,
+	}
+	actual, err := controllerFilesystems.Create(client.ServiceClient(), options).Extract()
+	th.AssertNoErr(t, err)
+
+	th.AssertEquals(t, actual.Size, 20)
+	th.AssertEquals(t, actual.Name, "ceph-float")
+}
+
+func TestDeleteControllerFS(t *testing.T) {
+	th.SetupHTTP()
+	defer th.TeardownHTTP()
+
+	HandleControllerFSDeletionSuccessfully(t)
+
+	res := controllerFilesystems.Delete(client.ServiceClient(), "f3fb26d3-3ab8-416d-b360-ca25e630159d")
+	th.AssertNoErr(t, res.Err)
 }

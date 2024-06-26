@@ -1,5 +1,5 @@
 /* SPDX-License-Identifier: Apache-2.0 */
-/* Copyright(c) 2019 Wind River Systems, Inc. */
+/* Copyright(c) 2019,2024 Wind River Systems, Inc. */
 
 package controllerFilesystems
 
@@ -23,4 +23,12 @@ func listURL(c *gophercloud.ServiceClient) string {
 
 func updateURL(c *gophercloud.ServiceClient, systemId string) string {
 	return c.ServiceURL("isystems", systemId, "controller_fs", "update_many")
+}
+
+func createURL(c *gophercloud.ServiceClient) string {
+	return rootURL(c)
+}
+
+func deleteURL(c *gophercloud.ServiceClient, id string) string {
+	return c.ServiceURL("controller_fs", id)
 }

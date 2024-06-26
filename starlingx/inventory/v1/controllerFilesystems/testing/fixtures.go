@@ -1,5 +1,5 @@
 /* SPDX-License-Identifier: Apache-2.0 */
-/* Copyright(c) 2019 Wind River Systems, Inc. */
+/* Copyright(c) 2019,2024 Wind River Systems, Inc. */
 
 package testing
 
@@ -142,6 +142,29 @@ const FileSystemSingleBody = `
       "uuid": "ff2e628d-23b2-4d73-b6b5-1c291ab6905a"
 }
 `
+const ControllerFSCephFloatSingleBody = `
+{
+      "created_at": "2024-07-12T15:41:10.295207+00:00",
+      "isystem_uuid": "52a7c2b0-ee64-4090-9d6e-c60892128a05",
+      "links": [
+        {
+          "href": "http://192.168.204.2:6385/v1/controller_fs/f3fb26d3-3ab8-416d-b360-ca25e630159d",
+          "rel": "self"
+        },
+        {
+          "href": "http://192.168.204.2:6385/controller_fs/f3fb26d3-3ab8-416d-b360-ca25e630159d",
+          "rel": "bookmark"
+        }
+      ],
+      "logical_volume": "ceph-float-lv",
+      "name": "ceph-float",
+      "replicated": false,
+      "size": 20,
+      "state": null,
+      "updated_at": null,
+      "uuid": "f3fb26d3-3ab8-416d-b360-ca25e630159d"
+}
+`
 
 func HandleFileSystemListSuccessfully(t *testing.T) {
 	th.Mux.HandleFunc("/controller_fs", func(w http.ResponseWriter, r *http.Request) {
@@ -169,5 +192,29 @@ func HandleFileSystemUpdateSuccessfully(t *testing.T) {
 		th.TestHeader(t, r, "Content-Type", "application/json")
 		th.TestJSONRequest(t, r, `[ { "op": "replace", "path": "/name", "value": "new-name" } ]`)
 		fmt.Fprintf(w, FileSystemSingleBody)
+	})
+}
+
+func HandleControllerFSCreationSuccessfully(t *testing.T, response string) {
+	th.Mux.HandleFunc("/controller_fs", func(w http.ResponseWriter, r *http.Request) {
+		th.TestMethod(t, r, "POST")
+		th.TestHeader(t, r, "X-Auth-Token", client.TokenID)
+		th.TestJSONRequest(t, r, `{
+			"name": "ceph-float",
+			"size": 20
+		}`)
+
+		w.WriteHeader(http.StatusAccepted)
+		w.Header().Add("Content-Type", "application/json")
+		fmt.Fprint(w, response)
+	})
+}
+
+func HandleControllerFSDeletionSuccessfully(t *testing.T) {
+	th.Mux.HandleFunc("/controller_fs/f3fb26d3-3ab8-416d-b360-ca25e630159d", func(w http.ResponseWriter, r *http.Request) {
+		th.TestMethod(t, r, "DELETE")
+		th.TestHeader(t, r, "X-Auth-Token", client.TokenID)
+
+		w.WriteHeader(http.StatusNoContent)
 	})
 }
