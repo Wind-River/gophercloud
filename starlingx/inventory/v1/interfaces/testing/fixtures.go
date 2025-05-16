@@ -42,6 +42,28 @@ var (
 		Users:          []string{},
 		PTPRole:        &PTPRoles[0],
 	}
+	PlatformInterfaceHerp = interfaces.Interface{
+		ID:             "7499f727-e19b-4e9b-a571-5919bad20dc3",
+		Name:           "Herp",
+		Type:           interfaces.IFTypeEthernet,
+		Class:          interfaces.IFClassPlatform,
+		MTU:            1500,
+		MaxTxRate:      30,
+		MaxRxRate:      40,
+		VID:            nil,
+		IPv4Mode:       &IPv4Modes[0],
+		IPv4Pool:       nil,
+		IPv6Mode:       &IPv6Modes[0],
+		IPv6Pool:       nil,
+		Networks:       nil,
+		DataNetworks:   nil,
+		AEMode:         nil,
+		AETransmitHash: nil,
+		VFCount:        &VFCounts[0],
+		Uses:           []string{"data0"},
+		Users:          []string{},
+		PTPRole:        &PTPRoles[0],
+	}
 	InterfaceDerp = interfaces.Interface{
 		ID:             "a5965fee-dc60-40dc-a234-edf87f1f9380",
 		Name:           "Derp",
@@ -285,6 +307,44 @@ const InterfaceSingleBody = `
 }
 `
 
+const PlatformInterfaceSingleBody = `
+{
+      "aemode": null,
+      "forihostid": 2,
+      "ifclass": "platform",
+      "ifname": "Herp",
+      "iftype": "ethernet",
+      "ihost_uuid": "f73dda8e-be3c-4704-ad1e-ed99e44b846e",
+      "imac": "08:00:27:25:6a:20",
+      "imtu": 1500,
+      "max_tx_rate": 30,
+      "max_rx_rate": 40,
+      "ipv4_mode": "static",
+      "ipv6_mode": "static",
+      "links": [
+        {
+          "href": "http://192.168.204.2:6385/v1/iinterfaces/67f0631b-4616-4308-af36-820633f6a70e",
+          "rel": "self"
+        },
+        {
+          "href": "http://192.168.204.2:6385/iinterfaces/67f0631b-4616-4308-af36-820633f6a70e",
+          "rel": "bookmark"
+        }
+      ],
+      "schedpolicy": null,
+      "sriov_numvfs": 0,
+      "sriov_vf_driver": null,
+      "txhashpolicy": null,
+      "used_by": [],
+      "uses": [
+        "data0"
+      ],
+      "uuid": "7499f727-e19b-4e9b-a571-5919bad20dc3",
+      "vlan_id": null,
+      "ptp_role": "master"
+}
+`
+
 func HandleInterfaceListSuccessfully(t *testing.T) {
 	th.Mux.HandleFunc("/ihosts/f73dda8e-be3c-4704-ad1e-ed99e44b846e/iinterfaces", func(w http.ResponseWriter, r *http.Request) {
 		th.TestMethod(t, r, "GET")
@@ -338,6 +398,33 @@ func HandleInterfaceCreationSuccessfully(t *testing.T, response string) {
           "ipv6_mode": "pool",
           "ipv6_pool": "934d8341-5114-46d2-9560-7c47618892c7",
           "sriov_numvfs": 1,
+          "uses": [],
+          "usesmodify": [],
+          "ptp_role": "master"
+        }`)
+
+		w.WriteHeader(http.StatusAccepted)
+		w.Header().Add("Content-Type", "application/json")
+		fmt.Fprintf(w, response)
+	})
+}
+
+func HandlePlatformInterfaceCreationSuccessfully(t *testing.T, response string) {
+	th.Mux.HandleFunc("/iinterfaces", func(w http.ResponseWriter, r *http.Request) {
+		th.TestMethod(t, r, "POST")
+		th.TestHeader(t, r, "X-Auth-Token", client.TokenID)
+		th.TestJSONRequest(t, r, `{
+          "ifclass": "platform",
+          "ifname": "Herp",
+          "iftype": "ethernet",
+          "ihost_uuid": "f73dda8e-be3c-4704-ad1e-ed99e44b846e",
+          "imtu": 1500,
+          "max_tx_rate": 30,
+          "max_rx_rate": 40,
+          "ipv4_mode": "pool",
+          "ipv4_pool": "dbfa4c2e-4526-4aaf-b07b-a3da7aeb6c26",
+          "ipv6_mode": "pool",
+          "ipv6_pool": "934d8341-5114-46d2-9560-7c47618892c7",
           "uses": [],
           "usesmodify": [],
           "ptp_role": "master"

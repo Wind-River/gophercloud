@@ -119,6 +119,53 @@ func TestCreateInterface(t *testing.T) {
 	th.CheckDeepEquals(t, InterfaceDerp, *actual)
 }
 
+func TestCreatePlatformInterface(t *testing.T) {
+	th.SetupHTTP()
+	defer th.TeardownHTTP()
+	HandlePlatformInterfaceCreationSuccessfully(t, PlatformInterfaceSingleBody)
+	interfaceHostID := "f73dda8e-be3c-4704-ad1e-ed99e44b846e"
+	interfaceName := "Herp"
+	interfaceType := interfaces.IFTypeEthernet
+	interfaceClass := interfaces.IFClassPlatform
+	interfaceMTU := 1500
+	interfaceIPv4Mode := interfaces.AddressModePool
+	interfaceIPv4Pool := "dbfa4c2e-4526-4aaf-b07b-a3da7aeb6c26"
+	interfaceIPv6Mode := interfaces.AddressModePool
+	interfaceIPv6Pool := "934d8341-5114-46d2-9560-7c47618892c7"
+	interfaceUses := []string{}
+	interfaceUsers := []string{}
+	ptpRole := interfaces.PTPRoleMaster
+	maxTxRate := 30
+	maxRxRate := 40
+
+	actual, err := interfaces.Create(client.ServiceClient(), interfaces.InterfaceOpts{
+		HostUUID:         &interfaceHostID,
+		Type:             &interfaceType,
+		Name:             &interfaceName,
+		Class:            &interfaceClass,
+		MTU:              &interfaceMTU,
+		VID:              nil,
+		IPv4Mode:         &interfaceIPv4Mode,
+		IPv4Pool:         &interfaceIPv4Pool,
+		IPv6Mode:         &interfaceIPv6Mode,
+		IPv6Pool:         &interfaceIPv6Pool,
+		Networks:         nil,
+		NetworksToAdd:    nil,
+		NetworksToDelete: nil,
+		DataNetworks:     nil,
+		AEMode:           nil,
+		AETransmitHash:   nil,
+		Uses:             &interfaceUses,
+		UsesModify:       &interfaceUsers,
+		PTPRole:          &ptpRole,
+		MaxTxRate:        &maxTxRate,
+		MaxRxRate:        &maxRxRate,
+	}).Extract()
+	th.AssertNoErr(t, err)
+
+	th.CheckDeepEquals(t, PlatformInterfaceHerp, *actual)
+}
+
 func TestUpdateInterface(t *testing.T) {
 	th.SetupHTTP()
 	defer th.TeardownHTTP()
