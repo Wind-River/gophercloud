@@ -80,7 +80,8 @@ func Get(c *gophercloud.ServiceClient, id string) GetResult {
 // fixUnits is a utility method which converts the incoming size attributes
 // from GiB units to the system API MiB equivalent.
 // TODO(alegacy): remove once system API is converted to GiB units.
-//  See: https://bugs.launchpad.net/bugs/1823737
+//
+//	See: https://bugs.launchpad.net/bugs/1823737
 func (opts *OSDOpts) fixUnits() {
 	if opts.JournalSize != nil {
 		*opts.JournalSize = *opts.JournalSize * int(units.Kibibyte)

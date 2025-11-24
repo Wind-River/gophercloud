@@ -236,8 +236,11 @@ func HandleServiceParameterGetSuccessfully(t *testing.T) {
 	})
 }
 
-/* This mock function returns the PATCH for the ServiceParameter for bbqUUID
-This example is ONLY changing the 'value' to 'disabled' */
+/*
+	This mock function returns the PATCH for the ServiceParameter for bbqUUID
+
+This example is ONLY changing the 'value' to 'disabled'
+*/
 func HandleServiceParameterUpdateSuccessfully(t *testing.T) {
 	th.Mux.HandleFunc("/service_parameter/"+bbqUUID, func(w http.ResponseWriter, r *http.Request) {
 		th.TestMethod(t, r, "PATCH")

@@ -6,9 +6,9 @@ package testing
 import (
 	"github.com/gophercloud/gophercloud/pagination"
 	"github.com/gophercloud/gophercloud/starlingx/inventory/v1/ptpinstances"
+	th "github.com/gophercloud/gophercloud/testhelper"
 	"github.com/gophercloud/gophercloud/testhelper/client"
 	"testing"
-	th "github.com/gophercloud/gophercloud/testhelper"
 )
 
 func TestListPTPInstances(t *testing.T) {
@@ -96,10 +96,12 @@ func TestAddPTPParameter(t *testing.T) {
 	defer th.TeardownHTTP()
 	HandleAddPTPParameterSuccessfully(t)
 
+	section := "global"
 	newValue := "domainNumber=24"
 
 	actual, err := ptpinstances.AddPTPParamToPTPInst(client.ServiceClient(),
 		herpUUID,
+		section,
 		ptpinstances.PTPParamToPTPInstOpts{
 			Parameter: &newValue,
 		}).Extract()
@@ -114,10 +116,12 @@ func TestRemovePTPParameter(t *testing.T) {
 	defer th.TeardownHTTP()
 	HandleRemovePTPParameterSuccessfully(t)
 
+	section := "global"
 	newValue := "domainNumber=24"
 
 	actual, err := ptpinstances.RemovePTPParamFromPTPInst(client.ServiceClient(),
 		herpUUID,
+		section,
 		ptpinstances.PTPParamToPTPInstOpts{
 			Parameter: &newValue,
 		}).Extract()
@@ -135,7 +139,7 @@ func TestAddToHost(t *testing.T) {
 	herbID := 2
 
 	actual, err := ptpinstances.AddPTPInstanceToHost(client.ServiceClient(),
-	    controllerHostID,
+		controllerHostID,
 		ptpinstances.PTPInstToHostOpts{
 			PTPInstanceID: &herbID,
 		}).Extract()
@@ -153,7 +157,7 @@ func TestRemoveFromHost(t *testing.T) {
 	herbID := 2
 
 	actual, err := ptpinstances.RemovePTPInstanceFromHost(client.ServiceClient(),
-	    controllerHostID,
+		controllerHostID,
 		ptpinstances.PTPInstToHostOpts{
 			PTPInstanceID: &herbID,
 		}).Extract()
