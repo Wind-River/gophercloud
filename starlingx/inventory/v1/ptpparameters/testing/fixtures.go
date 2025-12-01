@@ -38,7 +38,7 @@ const PTPParameterListBody = `
 	"ptp_parameters": [
 		{
 			"owners": ["424e80da-fdb0-4ddb-9f75-fa65d312d413"],
-		        "section": "global",
+			"section": "global",
 			"name": "domainNumber",
 			"created_at": "2022-01-24T21:15:17.290128+00:00",
 			"updated_at": null,
@@ -47,7 +47,7 @@ const PTPParameterListBody = `
 		}, 
 		{
 			"owners": ["82ef99c1-af38-432d-b5ac-ce6719ffc771"],
-		        "section": "global",
+			"section": "global",
 			"name": "masterOnly",
 			"created_at": "2022-01-24T21:50:27.567466+00:00",
 			"updated_at": null,
@@ -106,7 +106,7 @@ func HandlePTPParameterCreationSuccessfully(t *testing.T, response string) {
 		th.TestJSONRequest(t, r, `{
           "name": "masterOnly",
           "value": "0",
-	  "section": "global"
+          "section": "global"
         }`)
 
 		w.WriteHeader(http.StatusAccepted)
