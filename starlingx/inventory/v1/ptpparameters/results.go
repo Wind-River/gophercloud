@@ -44,6 +44,9 @@ type PTPParameter struct {
 	// UUID is generated unique UUID for the ptp parameter.
 	UUID string `json:"uuid"`
 
+	// Section is the Sectional value of PTP parameter
+	Section string `json:"section"`
+
 	// Name is the key of the PTP parameter.
 	Name string `json:"name"`
 
@@ -85,4 +88,3 @@ func ExtractPTPParameters(r pagination.Page) ([]PTPParameter, error) {
 
 	return s.PTPParameter, err
 }
-

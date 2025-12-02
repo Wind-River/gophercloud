@@ -15,10 +15,9 @@ const (
 	ServiceTs2phc  = "ts2phc"
 )
 
-
 type PTPInstanceOpts struct {
-	Name	  *string `json:"name,omitempty" mapstructure:"name"`
-	Service   *string `json:"service,omitempty" mapstructure:"service"`
+	Name    *string `json:"name,omitempty" mapstructure:"name"`
+	Service *string `json:"service,omitempty" mapstructure:"service"`
 }
 
 // PATCH /v1/ptp_instances/{ptpinstance_uuid}
@@ -114,10 +113,10 @@ func Create(c *gophercloud.ServiceClient, opts PTPInstanceOpts) (r CreateResult)
 	return r
 }
 
-// AddPTPParamToPTPInst accepts a PatchOpts struct and updates an existing 
+// AddPTPParamToPTPInst accepts a PatchOpts struct and updates an existing
 // PTPInstance to associate with a PTP parameter
-func AddPTPParamToPTPInst(c *gophercloud.ServiceClient, id string, opts PTPParamToPTPInstOpts) (r UpdateResult) {
-	reqBody, err := common.ConvertToPatchMap(opts, common.AddOp)
+func AddPTPParamToPTPInst(c *gophercloud.ServiceClient, id string, section string, opts PTPParamToPTPInstOpts) (r UpdateResult) {
+	reqBody, err := common.ConvertToSectionalPatchMap(section, opts, common.AddOp)
 	if err != nil {
 		r.Err = err
 		return r
@@ -131,10 +130,10 @@ func AddPTPParamToPTPInst(c *gophercloud.ServiceClient, id string, opts PTPParam
 	return r
 }
 
-// RemovePTPParamFromPTPInst accepts a PatchOpts struct and updates an existing 
+// RemovePTPParamFromPTPInst accepts a PatchOpts struct and updates an existing
 // PTPInstance to remove a certain PTP parameter
-func RemovePTPParamFromPTPInst(c *gophercloud.ServiceClient, id string, opts PTPParamToPTPInstOpts) (r UpdateResult) {
-	reqBody, err := common.ConvertToPatchMap(opts, common.RemoveOp)
+func RemovePTPParamFromPTPInst(c *gophercloud.ServiceClient, id string, section string, opts PTPParamToPTPInstOpts) (r UpdateResult) {
+	reqBody, err := common.ConvertToSectionalPatchMap(section, opts, common.RemoveOp)
 	if err != nil {
 		r.Err = err
 		return r
@@ -210,7 +209,7 @@ func ListHostPTPInstances(c *gophercloud.ServiceClient, hostID string) ([]PTPIns
 	return objs, err
 }
 
-// AddPTPInstanceToHost accepts a PatchOpts struct and updates an existing 
+// AddPTPInstanceToHost accepts a PatchOpts struct and updates an existing
 // PTPInstance to associate with a host.
 func AddPTPInstanceToHost(c *gophercloud.ServiceClient, hostID string, opts PTPInstToHostOpts) (r UpdateResult) {
 	reqBody, err := common.ConvertToPatchMap(opts, common.AddOp)

@@ -81,6 +81,17 @@ func ConvertToPatchMap(obj interface{}, op PatchOp) ([]interface{}, error) {
 	return m, nil
 }
 
+func ConvertToSectionalPatchMap(section string, opts interface{}, op PatchOp) ([]interface{}, error) {
+	patches, err := ConvertToPatchMap(opts, op)
+	if err != nil {
+		return nil, err
+	}
+	for i := range patches {
+		patches[i].(map[string]interface{})["section"] = section
+	}
+	return patches, nil
+}
+
 func ConvertToCreateMap(obj interface{}) (map[string]interface{}, error) {
 	result := make(map[string]interface{})
 	err := mapstructure.Decode(obj, &result)

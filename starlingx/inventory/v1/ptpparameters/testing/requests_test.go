@@ -6,9 +6,9 @@ package testing
 import (
 	"github.com/gophercloud/gophercloud/pagination"
 	"github.com/gophercloud/gophercloud/starlingx/inventory/v1/ptpparameters"
+	th "github.com/gophercloud/gophercloud/testhelper"
 	"github.com/gophercloud/gophercloud/testhelper/client"
 	"testing"
-	th "github.com/gophercloud/gophercloud/testhelper"
 )
 
 func TestListPTPParameters(t *testing.T) {

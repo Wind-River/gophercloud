@@ -6,26 +6,28 @@ package testing
 import (
 	"fmt"
 	"github.com/gophercloud/gophercloud/starlingx/inventory/v1/ptpparameters"
+	th "github.com/gophercloud/gophercloud/testhelper"
 	"github.com/gophercloud/gophercloud/testhelper/client"
 	"net/http"
 	"testing"
-	th "github.com/gophercloud/gophercloud/testhelper"
 )
 
 var (
 	PTPParameterHerp = ptpparameters.PTPParameter{
-		Owners: []string{"424e80da-fdb0-4ddb-9f75-fa65d312d413"},
-		Name: "domainNumber",
-		Value: "24",
-		UUID: "dd16b9c3-0fd2-491e-811d-df890a1524a1",
+		Owners:    []string{"424e80da-fdb0-4ddb-9f75-fa65d312d413"},
+		Section:   "global",
+		Name:      "domainNumber",
+		Value:     "24",
+		UUID:      "dd16b9c3-0fd2-491e-811d-df890a1524a1",
 		CreatedAt: "2022-01-24T21:15:17.290128+00:00",
 		UpdatedAt: nil,
 	}
 	PTPParameterDerp = ptpparameters.PTPParameter{
-		Owners: []string{"82ef99c1-af38-432d-b5ac-ce6719ffc771"},
-		Name: "masterOnly",
-		Value: "0",
-		UUID: "868e0ab8-2bc3-4d92-b736-de06bb8feb12",
+		Owners:    []string{"82ef99c1-af38-432d-b5ac-ce6719ffc771"},
+		Section:   "global",
+		Name:      "masterOnly",
+		Value:     "0",
+		UUID:      "868e0ab8-2bc3-4d92-b736-de06bb8feb12",
 		CreatedAt: "2022-01-24T21:50:27.567466+00:00",
 		UpdatedAt: nil,
 	}
@@ -36,6 +38,7 @@ const PTPParameterListBody = `
 	"ptp_parameters": [
 		{
 			"owners": ["424e80da-fdb0-4ddb-9f75-fa65d312d413"],
+			"section": "global",
 			"name": "domainNumber",
 			"created_at": "2022-01-24T21:15:17.290128+00:00",
 			"updated_at": null,
@@ -44,6 +47,7 @@ const PTPParameterListBody = `
 		}, 
 		{
 			"owners": ["82ef99c1-af38-432d-b5ac-ce6719ffc771"],
+			"section": "global",
 			"name": "masterOnly",
 			"created_at": "2022-01-24T21:50:27.567466+00:00",
 			"updated_at": null,
@@ -62,7 +66,8 @@ const PTPParameterSingleBody = `
 	"updated_at": null,
 	"value": "0",
 	"id": 2,
-	"name": "masterOnly"
+	"name": "masterOnly",
+	"section": "global"
 }
 `
 
@@ -100,7 +105,8 @@ func HandlePTPParameterCreationSuccessfully(t *testing.T, response string) {
 		th.TestHeader(t, r, "X-Auth-Token", client.TokenID)
 		th.TestJSONRequest(t, r, `{
           "name": "masterOnly",
-          "value": "0"
+          "value": "0",
+          "section": "global"
         }`)
 
 		w.WriteHeader(http.StatusAccepted)

@@ -10,8 +10,8 @@ import (
 )
 
 type PTPInterfaceOpts struct {
-	Name		    *string `json:"name,omitempty" mapstructure:"name"`
-	PTPInstanceUUID *string `json:"ptp_instance_uuid, omitempty" mapstructure:"ptp_instance_uuid,omitempty"`
+	Name            *string `json:"name,omitempty" mapstructure:"name"`
+	PTPInstanceUUID *string `json:"ptp_instance_uuid,omitempty" mapstructure:"ptp_instance_uuid,omitempty"`
 }
 
 // PATCH /v1/ptp_interfaces/{ptpinterface_uuid}
@@ -209,7 +209,6 @@ func AddPTPParamToPTPInt(c *gophercloud.ServiceClient, id string, opts PTPParamT
 
 	return r
 }
-
 
 // RemovePTPParamFromPTPInt accepts a PatchOpts struct and updates an existing PTPInterface
 // to remove a certain PTP parameter

@@ -6,9 +6,9 @@ package testing
 import (
 	"github.com/gophercloud/gophercloud/pagination"
 	"github.com/gophercloud/gophercloud/starlingx/inventory/v1/ptpinterfaces"
+	th "github.com/gophercloud/gophercloud/testhelper"
 	"github.com/gophercloud/gophercloud/testhelper/client"
 	"testing"
-	th "github.com/gophercloud/gophercloud/testhelper"
 )
 
 func TestListPTPInterfaces(t *testing.T) {
@@ -73,7 +73,7 @@ func TestListInterfacePTPInterfaces(t *testing.T) {
 	HandleIntPTPInterfaceListSuccessfully(t)
 
 	allPages, err := ptpinterfaces.InterfaceList(client.ServiceClient(),
-	    interfaceUUID,
+		interfaceUUID,
 		ptpinterfaces.ListOpts{}).AllPages()
 	th.AssertNoErr(t, err)
 	actual, err := ptpinterfaces.ExtractPTPInterfaces(allPages)
@@ -90,7 +90,7 @@ func TestCreatePTPInterface(t *testing.T) {
 	ptpInterfaceName := "ptpint1"
 	ptpInstanceUUID := "53041360-451f-49ea-8843-44fab16f6628"
 	actual, err := ptpinterfaces.Create(client.ServiceClient(), ptpinterfaces.PTPInterfaceOpts{
-		Name:    		 &ptpInterfaceName,
+		Name:            &ptpInterfaceName,
 		PTPInstanceUUID: &ptpInstanceUUID,
 	}).Extract()
 	th.AssertNoErr(t, err)
@@ -165,7 +165,7 @@ func TestAddPTPIntToInt(t *testing.T) {
 	PTPinterfaceID := 3
 
 	actual, err := ptpinterfaces.AddPTPIntToInt(client.ServiceClient(),
-	    interfaceUUID,
+		interfaceUUID,
 		ptpinterfaces.PTPIntToIntOpt{
 			PTPinterfaceID: &PTPinterfaceID,
 		}).Extract()
@@ -183,7 +183,7 @@ func TestRemovePTPIntFromInt(t *testing.T) {
 	PTPinterfaceID := 3
 
 	actual, err := ptpinterfaces.RemovePTPIntFromInt(client.ServiceClient(),
-	    interfaceUUID,
+		interfaceUUID,
 		ptpinterfaces.PTPIntToIntOpt{
 			PTPinterfaceID: &PTPinterfaceID,
 		}).Extract()

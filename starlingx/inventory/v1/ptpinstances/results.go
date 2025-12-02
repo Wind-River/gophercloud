@@ -61,8 +61,8 @@ type PTPInstance struct {
 	// Hostnames is the list of the host names assigned to the ptp instance.
 	HostNames []string `json:"hostnames,omitempty"`
 
-	// Parameters is the list of the parameters assigned to the ptp instance.
-	Parameters []string `json:"parameters,omitempty"`
+	// Parameters is the list of the parameters grouped by section assigned to the ptp instance.
+	Parameters map[string][]string `json:"parameters,omitempty"`
 
 	// CreatedAt defines the timestamp at which the resource was created.
 	CreatedAt string `json:"created_at"`

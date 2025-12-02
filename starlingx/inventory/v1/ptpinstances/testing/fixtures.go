@@ -6,54 +6,54 @@ package testing
 import (
 	"fmt"
 	"github.com/gophercloud/gophercloud/starlingx/inventory/v1/ptpinstances"
+	th "github.com/gophercloud/gophercloud/testhelper"
 	"github.com/gophercloud/gophercloud/testhelper/client"
 	"net/http"
 	"testing"
-	th "github.com/gophercloud/gophercloud/testhelper"
 )
 
 var (
-	controllerHostID         = "daadd444-d2f5-464c-9527-96fd34a05c16"
-	herpUUID			     = "fa5defce-2546-4786-ae58-7bb08e2105fc"
-	PTPInstanceHerp 	     = ptpinstances.PTPInstance{
-		UUID: 	      herpUUID,
-		ID:           2,
-		Name:         "phc2sys1",
-		Service:      "phc2sys",
-		HostNames:    []string{},
-		Parameters:   []string{},
-		CreatedAt:    "2022-01-18T20:47:27.655974+00:00",
-		UpdatedAt:    nil,
+	controllerHostID = "daadd444-d2f5-464c-9527-96fd34a05c16"
+	herpUUID         = "fa5defce-2546-4786-ae58-7bb08e2105fc"
+	PTPInstanceHerp  = ptpinstances.PTPInstance{
+		UUID:       herpUUID,
+		ID:         2,
+		Name:       "phc2sys1",
+		Service:    "phc2sys",
+		HostNames:  []string{},
+		Parameters: map[string][]string{},
+		CreatedAt:  "2022-01-18T20:47:27.655974+00:00",
+		UpdatedAt:  nil,
 	}
-	PTPInstanceDerp 	     = ptpinstances.PTPInstance{
-		UUID:         "53041360-451f-49ea-8843-44fab16f6628",
-		ID:           1,
-		Name:         "ptp1",
-		Service:      "ptp4l",
-		HostNames:    []string{},
-		Parameters:   []string{},
-		CreatedAt:    "2022-01-18T17:56:43.012323+00:00",
-		UpdatedAt:    nil,
+	PTPInstanceDerp = ptpinstances.PTPInstance{
+		UUID:       "53041360-451f-49ea-8843-44fab16f6628",
+		ID:         1,
+		Name:       "ptp1",
+		Service:    "ptp4l",
+		HostNames:  []string{},
+		Parameters: map[string][]string{},
+		CreatedAt:  "2022-01-18T17:56:43.012323+00:00",
+		UpdatedAt:  nil,
 	}
-	PTPInstanceHerpUpdated   = ptpinstances.PTPInstance{
-		UUID: 	      herpUUID,
-		ID:           2,
-		Name:         "phc2sys1",
-		Service:      "phc2sys",
-		HostNames:    []string{},
-		Parameters:   []string{"domainNumber=24"},
-		CreatedAt:    "2022-01-18T20:47:27.655974+00:00",
-		UpdatedAt:    nil,
+	PTPInstanceHerpUpdated = ptpinstances.PTPInstance{
+		UUID:       herpUUID,
+		ID:         2,
+		Name:       "phc2sys1",
+		Service:    "phc2sys",
+		HostNames:  []string{},
+		Parameters: map[string][]string{"global": []string{"domainNumber=24"}},
+		CreatedAt:  "2022-01-18T20:47:27.655974+00:00",
+		UpdatedAt:  nil,
 	}
 	PTPInstanceHerpAddToHost = ptpinstances.PTPInstance{
-		UUID: 	      herpUUID,
-		ID:           2,
-		Name:         "phc2sys1",
-		Service:      "phc2sys",
-		HostNames:    []string{"controller-0"},
-		Parameters:   []string{},
-		CreatedAt:    "2022-01-18T20:47:27.655974+00:00",
-		UpdatedAt:    nil,
+		UUID:       herpUUID,
+		ID:         2,
+		Name:       "phc2sys1",
+		Service:    "phc2sys",
+		HostNames:  []string{"controller-0"},
+		Parameters: map[string][]string{},
+		CreatedAt:  "2022-01-18T20:47:27.655974+00:00",
+		UpdatedAt:  nil,
 	}
 )
 
@@ -67,7 +67,7 @@ const PTPInstanceListBody = `
 		 	"updated_at": null,
 		 	"capabilities": {},
 		 	"hostnames": [],
-		 	"parameters": [],
+			"parameters": {},
 		 	"type": "ptp-instance",
 		 	"id": 2,
 		 	"name": "phc2sys1"
@@ -79,7 +79,7 @@ const PTPInstanceListBody = `
 			"updated_at": null,
 			"capabilities": {},
 			"hostnames": [],
-			"parameters": [],
+			"parameters": {},
 			"type": "ptp-instance",
 			"id": 1,
 			"name": "ptp1"
@@ -96,7 +96,7 @@ const PTPInstanceSingleBody = `
 	"updated_at": null,
 	"capabilities": {},
 	"hostnames": [],
-	"parameters": [],
+	"parameters": {},
 	"type": "ptp-instance",
 	"id": 2,
 	"name": "phc2sys1"
@@ -111,7 +111,7 @@ const AddPTPParametersBody = `
 	"updated_at": null,
 	"capabilities": {},
 	"hostnames": [],
-	"parameters": ["domainNumber=24"],
+	"parameters": {"global": ["domainNumber=24"]},
 	"type": "ptp-instance",
 	"id": 2,
 	"name": "phc2sys1"
@@ -126,7 +126,7 @@ const HerpAddToHostBody = `
 	"updated_at": null,
 	"capabilities": {},
 	"hostnames": ["controller-0"],
-	"parameters": [],
+	"parameters": {},
 	"type": "ptp-instance",
 	"id": 2,
 	"name": "phc2sys1"
@@ -200,7 +200,7 @@ func HandleAddPTPParameterSuccessfully(t *testing.T) {
 		th.TestHeader(t, r, "X-Auth-Token", client.TokenID)
 		th.TestHeader(t, r, "Accept", "application/json")
 		th.TestHeader(t, r, "Content-Type", "application/json")
-		th.TestJSONRequest(t, r, `[ { "op": "add", "path": "/ptp_parameters/-", "value": "domainNumber=24" } ]`)
+		th.TestJSONRequest(t, r, `[ { "op": "add", "path": "/ptp_parameters/-", "section": "global", "value": "domainNumber=24" } ]`)
 		fmt.Fprintf(w, AddPTPParametersBody)
 	})
 }
@@ -211,7 +211,7 @@ func HandleRemovePTPParameterSuccessfully(t *testing.T) {
 		th.TestHeader(t, r, "X-Auth-Token", client.TokenID)
 		th.TestHeader(t, r, "Accept", "application/json")
 		th.TestHeader(t, r, "Content-Type", "application/json")
-		th.TestJSONRequest(t, r, `[ { "op": "remove", "path": "/ptp_parameters/-", "value": "domainNumber=24" } ]`)
+		th.TestJSONRequest(t, r, `[ { "op": "remove", "path": "/ptp_parameters/-", "section": "global", "value": "domainNumber=24" } ]`)
 		fmt.Fprintf(w, PTPInstanceSingleBody)
 	})
 }

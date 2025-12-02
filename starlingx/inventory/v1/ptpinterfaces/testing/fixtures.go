@@ -6,17 +6,17 @@ package testing
 import (
 	"fmt"
 	"github.com/gophercloud/gophercloud/starlingx/inventory/v1/ptpinterfaces"
+	th "github.com/gophercloud/gophercloud/testhelper"
 	"github.com/gophercloud/gophercloud/testhelper/client"
 	"net/http"
 	"testing"
-	th "github.com/gophercloud/gophercloud/testhelper"
 )
 
 var (
-	controllerHostID        = "daadd444-d2f5-464c-9527-96fd34a05c16"
-	interfaceUUID           = "f75b7395-df5f-422d-a404-db24d3a07cea"
-	herpUUID                = "53041360-451f-49ea-8843-44fab16f6628"
-	PTPInterfaceHerp        = ptpinterfaces.PTPInterface{
+	controllerHostID = "daadd444-d2f5-464c-9527-96fd34a05c16"
+	interfaceUUID    = "f75b7395-df5f-422d-a404-db24d3a07cea"
+	herpUUID         = "53041360-451f-49ea-8843-44fab16f6628"
+	PTPInterfaceHerp = ptpinterfaces.PTPInterface{
 		PTPInstanceUUID: herpUUID,
 		InterfaceNames:  []string{},
 		UUID:            "b7d51ba0-35d7-4bab-9e27-a8b701587c54",
@@ -28,7 +28,7 @@ var (
 		UpdatedAt:       nil,
 		Name:            "ptpint1",
 	}
-	PTPInterfaceDerp        = ptpinterfaces.PTPInterface{
+	PTPInterfaceDerp = ptpinterfaces.PTPInterface{
 		PTPInstanceUUID: "fa5defce-2546-4786-ae58-7bb08e2105fc",
 		InterfaceNames:  []string{},
 		UUID:            "45f0e417-26be-4ef7-b9c4-7283611a9c20",

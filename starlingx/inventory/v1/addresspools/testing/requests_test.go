@@ -82,7 +82,7 @@ func TestCreateAddressPool(t *testing.T) {
 	floating_addr := "169.254.202.2"
 	c0_addr := "169.254.202.3"
 	c1_addr := "169.254.202.4"
-	
+
 	actual, err := addresspools.Create(client.ServiceClient(), addresspools.AddressPoolOpts{
 		Name:               &name,
 		Prefix:             &prefix,
