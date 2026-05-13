@@ -174,6 +174,7 @@ func HandleVolumeGroupUpdateSuccessfully(t *testing.T) {
 		th.TestHeader(t, r, "Content-Type", "application/json")
 		th.TestJSONRequest(t, r, `[ { "path": "/capabilities", "value": {
               "concurrent_disk_operations": null,
+			  "lvm_function": null,
               "lvm_type": null
             }, "op": "replace"} ]`)
 
