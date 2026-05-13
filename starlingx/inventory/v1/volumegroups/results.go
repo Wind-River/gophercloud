@@ -83,6 +83,7 @@ type LVMInfo struct {
 // this resource.
 type Capabilities struct {
 	LVMType                  *string `json:"lvm_type"`
+	LVMFunction              *string `json:"lvm_function"`
 	ConcurrentDiskOperations *int    `json:"concurrent_disk_operations"`
 }
 

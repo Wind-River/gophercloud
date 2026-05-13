@@ -14,6 +14,7 @@ var SystemDefinedVolumeGroups = []string{"cgts-vg"}
 type CapabilitiesOpts struct {
 	ConcurrentDiskOperations *int    `json:"concurrent_disk_operations,omitempty" mapstructure:"concurrent_disk_operations"`
 	LVMType                  *string `json:"lvm_type,omitempty" mapstructure:"lvm_type"`
+	LVMFunction              *string `json:"lvm_function,omitempty" mapstructure:"lvm_function"`
 }
 
 type VolumeGroupOpts struct {
