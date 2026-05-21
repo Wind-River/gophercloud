@@ -4,6 +4,8 @@
 package volumegroups
 
 import (
+	"encoding/json"
+
 	"github.com/gophercloud/gophercloud"
 	"github.com/gophercloud/gophercloud/pagination"
 	common "github.com/gophercloud/gophercloud/starlingx"
@@ -15,6 +17,7 @@ type CapabilitiesOpts struct {
 	ConcurrentDiskOperations *int    `json:"concurrent_disk_operations,omitempty" mapstructure:"concurrent_disk_operations"`
 	LVMType                  *string `json:"lvm_type,omitempty" mapstructure:"lvm_type"`
 	LVMFunction              *string `json:"lvm_function,omitempty" mapstructure:"lvm_function"`
+	LVMPoolSize              *int    `json:"lvm_pool_size,omitempty" mapstructure:"lvm_pool_size"`
 }
 
 type VolumeGroupOpts struct {
@@ -93,10 +96,27 @@ func Create(c *gophercloud.ServiceClient, opts VolumeGroupOpts) (r CreateResult)
 // Update accepts a PatchOpts struct and updates an existing volume group using
 // the values provided. For more information, see the Create function.
 func Update(c *gophercloud.ServiceClient, id string, opts VolumeGroupOpts) (r UpdateResult) {
+	capOpts := opts.Capabilities
+	opts.Capabilities = nil
+
 	reqBody, err := common.ConvertToPatchMap(opts, common.ReplaceOp)
 	if err != nil {
 		r.Err = err
 		return r
+	}
+
+	if capOpts != nil {
+		capJSON, err := json.Marshal(capOpts)
+		if err != nil {
+			r.Err = err
+			return r
+		}
+
+		reqBody = append(reqBody, map[string]interface{}{
+			"op":    common.ReplaceOp,
+			"path":  "/capabilities",
+			"value": string(capJSON),
+		})
 	}
 
 	// Send request to API

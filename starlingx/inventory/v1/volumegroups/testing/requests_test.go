@@ -110,3 +110,22 @@ func TestUpdateVolumeGroup(t *testing.T) {
 	}
 	th.CheckDeepEquals(t, VolumeGroupDerp, *actual)
 }
+
+func TestUpdateVolumeGroupCapabilities(t *testing.T) {
+	th.SetupHTTP()
+	defer th.TeardownHTTP()
+	HandleVolumeGroupUpdateCapabilitiesSuccessfully(t)
+
+	lvmFunction := "lvm-csi"
+	Capabilities := volumegroups.CapabilitiesOpts{
+		LVMFunction: &lvmFunction,
+	}
+	actual, err := volumegroups.Update(client.ServiceClient(),
+		"449aee64-342f-4255-9a23-b229b0589c1b",
+		volumegroups.VolumeGroupOpts{
+			Capabilities: &Capabilities}).Extract()
+	if err != nil {
+		t.Fatalf("Unexpected Update error: %v", err)
+	}
+	th.CheckDeepEquals(t, VolumeGroupDerpUpdated, *actual)
+}

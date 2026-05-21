@@ -172,12 +172,67 @@ func HandleVolumeGroupUpdateSuccessfully(t *testing.T) {
 		th.TestHeader(t, r, "X-Auth-Token", client.TokenID)
 		th.TestHeader(t, r, "Accept", "application/json")
 		th.TestHeader(t, r, "Content-Type", "application/json")
-		th.TestJSONRequest(t, r, `[ { "path": "/capabilities", "value": {
-              "concurrent_disk_operations": null,
-			  "lvm_function": null,
-              "lvm_type": null
-            }, "op": "replace"} ]`)
+		th.TestJSONRequest(t, r, `[ { "path": "/capabilities", "value": "{}", "op": "replace"} ]`)
 
 		fmt.Fprint(w, VolumeGroupSingleBody)
+	})
+}
+
+var (
+	LVMFunctionCSI            = "lvm-csi"
+	VolumeGroupUpdatedBody    = `
+{
+	"lvm_vg_access": "wz--n-",
+	"lvm_vg_size": 36503027712,
+	"lvm_max_lv": 0,
+	"lvm_vg_free_pe": 0,
+	"uuid": "449aee64-342f-4255-9a23-b229b0589c1b",
+	"lvm_cur_lv": 1,
+	"created_at": "2019-11-07T21:07:46.112632+00:00",
+	"lvm_max_pv": 0,
+	"updated_at": "2019-11-14T21:04:50.029120+00:00",
+	"capabilities": {"lvm_function": "lvm-csi"},
+	"vg_state": "provisioned",
+	"lvm_vg_avail_size": 0,
+	"ihost_uuid": "f757b5c7-89ab-4d93-bfd7-a97780ec2c1e",
+	"lvm_cur_pv": 1,
+	"lvm_vg_uuid": "VI0rH6-sFJr-SaGV-QfmU-ogMu-UKMa-g45SjM",
+	"lvm_vg_total_pe": 8703,
+	"lvm_vg_name": "lvm-provisioner"
+}
+`
+	VolumeGroupDerpUpdated = volumegroups.VolumeGroup{
+		ID:     "449aee64-342f-4255-9a23-b229b0589c1b",
+		HostID: "f757b5c7-89ab-4d93-bfd7-a97780ec2c1e",
+		State:  "provisioned",
+		Capabilities: volumegroups.Capabilities{
+			LVMFunction: &LVMFunctionCSI,
+		},
+		LVMInfo: volumegroups.LVMInfo{
+			Name:                   "lvm-provisioner",
+			GroupUUID:              "VI0rH6-sFJr-SaGV-QfmU-ogMu-UKMa-g45SjM",
+			Access:                 "wz--n-",
+			Size:                   36503027712,
+			AvailableSize:          0,
+			TotalPE:                8703,
+			FreePE:                 0,
+			CurrentLogicalVolumes:  1,
+			CurrentPhysicalVolumes: 1,
+			MaximumPhysicalVolumes: 0,
+		},
+		CreatedAt: "2019-11-07T21:07:46.112632+00:00",
+		UpdatedAt: &UpdatedAtDerp,
+	}
+)
+
+func HandleVolumeGroupUpdateCapabilitiesSuccessfully(t *testing.T) {
+	th.Mux.HandleFunc("/ilvgs/449aee64-342f-4255-9a23-b229b0589c1b", func(w http.ResponseWriter, r *http.Request) {
+		th.TestMethod(t, r, "PATCH")
+		th.TestHeader(t, r, "X-Auth-Token", client.TokenID)
+		th.TestHeader(t, r, "Accept", "application/json")
+		th.TestHeader(t, r, "Content-Type", "application/json")
+		th.TestJSONRequest(t, r, `[ { "path": "/capabilities", "value": "{\"lvm_function\":\"lvm-csi\"}", "op": "replace"} ]`)
+
+		fmt.Fprint(w, VolumeGroupUpdatedBody)
 	})
 }
