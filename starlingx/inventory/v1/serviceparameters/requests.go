@@ -107,8 +107,8 @@ func Apply(c *gophercloud.ServiceClient, opts ServiceApplyOpts) (r ApplyResult) 
 		r.Err = err
 		return r
 	}
-	_, r.Err = c.Post(applyURL(c), reqBody, &r.Body, &gophercloud.RequestOpts{
-		OkCodes: []int{204},
+	_, r.Err = c.Post(applyURL(c), reqBody, nil, &gophercloud.RequestOpts{
+		OkCodes: []int{200, 204},
 	})
 	return r
 }
