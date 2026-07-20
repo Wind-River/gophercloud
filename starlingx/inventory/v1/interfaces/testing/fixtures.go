@@ -435,3 +435,82 @@ func HandlePlatformInterfaceCreationSuccessfully(t *testing.T, response string) 
 		fmt.Fprintf(w, response)
 	})
 }
+
+const OVSAccessInterfaceSingleBody = `
+{
+  "aemode": null,
+  "forihostid": 2,
+  "ifclass": "platform",
+  "ifname": "ovs0",
+  "iftype": "ethernet",
+  "ihost_uuid": "f73dda8e-be3c-4704-ad1e-ed99e44b846e",
+  "imac": "08:00:27:25:6a:20",
+  "imtu": 9000,
+  "ipv4_mode": "disabled",
+  "ipv6_mode": "disabled",
+  "sriov_numvfs": 0,
+  "sriov_vf_driver": null,
+  "txhashpolicy": null,
+  "used_by": [],
+  "uses": ["sriov0"],
+  "uuid": "c1e2d3f4-a5b6-7890-abcd-ef1234567890",
+  "vlan_id": null,
+  "ptp_role": "none",
+  "ovs_access": true
+}
+`
+
+var (
+	ovsAccessTrue            = true
+	ipv4ModeDisabled         = interfaces.AddressModeDisabled
+	ipv6ModeDisabled         = interfaces.AddressModeDisabled
+	ptpRoleNone              = interfaces.PTPRoleNone
+	vfCountZero              = 0
+	OVSAccessInterfaceExpected = interfaces.Interface{
+		ID:           "c1e2d3f4-a5b6-7890-abcd-ef1234567890",
+		Name:         "ovs0",
+		Type:         interfaces.IFTypeEthernet,
+		Class:        interfaces.IFClassPlatform,
+		MTU:          9000,
+		IPv4Mode:     &ipv4ModeDisabled,
+		IPv6Mode:     &ipv6ModeDisabled,
+		VFCount:      &vfCountZero,
+		Uses:         []string{"sriov0"},
+		Users:        []string{},
+		PTPRole:      &ptpRoleNone,
+		OVSAccess:    &ovsAccessTrue,
+	}
+)
+
+func HandleOVSAccessInterfaceCreationSuccessfully(t *testing.T) {
+	th.Mux.HandleFunc("/iinterfaces", func(w http.ResponseWriter, r *http.Request) {
+		th.TestMethod(t, r, "POST")
+		th.TestHeader(t, r, "X-Auth-Token", client.TokenID)
+		th.TestJSONRequestUnordered(t, r, `{
+          "ifclass": "platform",
+          "ifname": "ovs0",
+          "iftype": "ethernet",
+          "ihost_uuid": "f73dda8e-be3c-4704-ad1e-ed99e44b846e",
+          "imtu": 9000,
+          "uses": ["sriov0"],
+          "usesmodify": [],
+          "ptp_role": "none",
+          "ovs_access": true
+        }`)
+
+		w.WriteHeader(http.StatusAccepted)
+		w.Header().Add("Content-Type", "application/json")
+		fmt.Fprintf(w, OVSAccessInterfaceSingleBody)
+	})
+}
+
+func HandleOVSAccessInterfaceUpdateSuccessfully(t *testing.T) {
+	th.Mux.HandleFunc("/iinterfaces/c1e2d3f4-a5b6-7890-abcd-ef1234567890", func(w http.ResponseWriter, r *http.Request) {
+		th.TestMethod(t, r, "PATCH")
+		th.TestHeader(t, r, "X-Auth-Token", client.TokenID)
+		th.TestHeader(t, r, "Accept", "application/json")
+		th.TestHeader(t, r, "Content-Type", "application/json")
+		th.TestJSONRequestUnordered(t, r, `[ { "op": "replace", "path": "/ovs_access", "value": true } ]`)
+		fmt.Fprintf(w, OVSAccessInterfaceSingleBody)
+	})
+}

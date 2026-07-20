@@ -119,6 +119,9 @@ type Interface struct {
 
 	// max_rx_rate for rx rate limit configuration.
 	MaxRxRate int `json:"max_rx_rate"`
+
+	// OVSAccess indicates whether OVS access is enabled for this interface.
+	OVSAccess *bool `json:"ovs_access,omitempty"`
 }
 
 // InterfacePage is the page returned by a pager when traversing over a
