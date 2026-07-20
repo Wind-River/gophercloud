@@ -187,3 +187,49 @@ func TestDeleteInterface(t *testing.T) {
 	res := interfaces.Delete(client.ServiceClient(), "a5965fee-dc60-40dc-a234-edf87f1f9380")
 	th.AssertNoErr(t, res.Err)
 }
+
+func TestCreateOVSAccessInterface(t *testing.T) {
+	th.SetupHTTP()
+	defer th.TeardownHTTP()
+	HandleOVSAccessInterfaceCreationSuccessfully(t)
+
+	interfaceHostID := "f73dda8e-be3c-4704-ad1e-ed99e44b846e"
+	interfaceName := "ovs0"
+	interfaceType := interfaces.IFTypeEthernet
+	interfaceClass := interfaces.IFClassPlatform
+	interfaceMTU := 9000
+	interfaceUses := []string{"sriov0"}
+	interfaceUsers := []string{}
+	ptpRole := interfaces.PTPRoleNone
+	ovsAccess := true
+
+	actual, err := interfaces.Create(client.ServiceClient(), interfaces.InterfaceOpts{
+		HostUUID:   &interfaceHostID,
+		Type:       &interfaceType,
+		Name:       &interfaceName,
+		Class:      &interfaceClass,
+		MTU:        &interfaceMTU,
+		Uses:       &interfaceUses,
+		UsesModify: &interfaceUsers,
+		PTPRole:    &ptpRole,
+		OVSAccess:  &ovsAccess,
+	}).Extract()
+	th.AssertNoErr(t, err)
+
+	th.CheckDeepEquals(t, OVSAccessInterfaceExpected, *actual)
+}
+
+func TestUpdateOVSAccessInterface(t *testing.T) {
+	th.SetupHTTP()
+	defer th.TeardownHTTP()
+	HandleOVSAccessInterfaceUpdateSuccessfully(t)
+
+	ovsAccess := true
+	actual, err := interfaces.Update(client.ServiceClient(),
+		"c1e2d3f4-a5b6-7890-abcd-ef1234567890",
+		interfaces.InterfaceOpts{OVSAccess: &ovsAccess}).Extract()
+	if err != nil {
+		t.Fatalf("Unexpected Update error: %v", err)
+	}
+	th.CheckDeepEquals(t, OVSAccessInterfaceExpected, *actual)
+}

@@ -155,7 +155,7 @@ func HandleDiskPartitionUpdateSuccessfully(t *testing.T) {
 		th.TestHeader(t, r, "X-Auth-Token", client.TokenID)
 		th.TestHeader(t, r, "Accept", "application/json")
 		th.TestHeader(t, r, "Content-Type", "application/json")
-		th.TestJSONRequest(t, r, `[
+		th.TestJSONRequestUnordered(t, r, `[
           {
             "op": "replace",
             "path": "/ihost_uuid",

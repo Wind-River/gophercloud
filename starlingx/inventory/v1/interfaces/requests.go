@@ -77,6 +77,7 @@ type InterfaceOpts struct {
 	PTPRole          *string   `json:"ptp_role,omitempty" mapstructure:"ptp_role"`
 	MaxTxRate        *int      `json:"max_tx_rate,omitempty" mapstructure:"max_tx_rate"`
 	MaxRxRate        *int      `json:"max_rx_rate,omitempty" mapstructure:"max_rx_rate"`
+	OVSAccess        *bool     `json:"ovs_access,omitempty" mapstructure:"ovs_access"`
 }
 
 // ListOptsBuilder allows extensions to add additional parameters to the

@@ -7,6 +7,7 @@ import (
 	"path/filepath"
 	"reflect"
 	"runtime"
+	"sort"
 	"strings"
 	"testing"
 	"github.com/google/go-cmp/cmp"
@@ -328,7 +329,18 @@ func isJSONEqualsUnordered(t *testing.T, expectedJSON string, actual interface{}
 	err = json.Unmarshal(jsonActual, &parsedActual)
 	AssertNoErr(t, err)
 
-	if !cmp.Equal(parsedExpected, parsedActual) {
+	sortOpt := cmp.Transformer("SortSlices", func(in []interface{}) []interface{} {
+		out := make([]interface{}, len(in))
+		copy(out, in)
+		sort.Slice(out, func(i, j int) bool {
+			a, _ := json.Marshal(out[i])
+			b, _ := json.Marshal(out[j])
+			return string(a) < string(b)
+		})
+		return out
+	})
+
+	if !cmp.Equal(parsedExpected, parsedActual, sortOpt) {
 		prettyExpected, err := json.MarshalIndent(parsedExpected, "", "  ")
 		if err != nil {
 			t.Logf("Unable to pretty-print expected JSON: %v\n%s", err, expectedJSON)

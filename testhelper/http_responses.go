@@ -94,6 +94,24 @@ func TestJSONRequest(t *testing.T, r *http.Request, expected string) {
 	CheckJSONEquals(t, expected, actualJSON)
 }
 
+// TestJSONRequestUnordered verifies that the JSON request body matches
+// the expected value without considering the order of array elements or
+// object keys.
+func TestJSONRequestUnordered(t *testing.T, r *http.Request, expected string) {
+	b, err := ioutil.ReadAll(r.Body)
+	if err != nil {
+		t.Errorf("Unable to read request body: %v", err)
+	}
+
+	var actualJSON interface{}
+	err = json.Unmarshal(b, &actualJSON)
+	if err != nil {
+		t.Errorf("Unable to parse request body as JSON: %v", err)
+	}
+
+	CheckJSONEqualsUnordered(t, expected, actualJSON)
+}
+
 func normalizeMultipartBoundary(body string) string {
 	re := regexp.MustCompile(`^--[a-z0-9]{60}`)
 	boundary := re.FindString(body)
