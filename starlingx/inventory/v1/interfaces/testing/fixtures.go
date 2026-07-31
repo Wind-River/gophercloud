@@ -514,3 +514,150 @@ func HandleOVSAccessInterfaceUpdateSuccessfully(t *testing.T) {
 		fmt.Fprintf(w, OVSAccessInterfaceSingleBody)
 	})
 }
+
+const ChannelsInterfaceSingleBody = `
+{
+  "aemode": null,
+  "forihostid": 2,
+  "ifclass": "platform",
+  "ifname": "pxeboot0",
+  "iftype": "ethernet",
+  "ihost_uuid": "f73dda8e-be3c-4704-ad1e-ed99e44b846e",
+  "imac": "08:00:27:25:6a:20",
+  "imtu": 9000,
+  "ipv4_mode": "static",
+  "ipv6_mode": "disabled",
+  "sriov_numvfs": 0,
+  "sriov_vf_driver": null,
+  "txhashpolicy": null,
+  "used_by": [],
+  "uses": [],
+  "uuid": "d1e2f3a4-b5c6-7890-abcd-ef1234567890",
+  "vlan_id": null,
+  "ptp_role": "none",
+  "channels": 8,
+  "sriov_vf_channels": null,
+  "max_tx_rate": 0,
+  "max_rx_rate": 0
+}
+`
+
+const VFChannelsInterfaceSingleBody = `
+{
+  "aemode": null,
+  "forihostid": 2,
+  "ifclass": "pci-sriov",
+  "ifname": "sriov-netdev0",
+  "iftype": "vf",
+  "ihost_uuid": "f73dda8e-be3c-4704-ad1e-ed99e44b846e",
+  "imac": "08:00:27:25:6a:20",
+  "imtu": 1500,
+  "ipv4_mode": "disabled",
+  "ipv6_mode": "disabled",
+  "sriov_numvfs": 4,
+  "sriov_vf_driver": "netdevice",
+  "txhashpolicy": null,
+  "used_by": [],
+  "uses": ["sriov0"],
+  "uuid": "e2f3a4b5-c6d7-8901-abcd-ef2345678901",
+  "vlan_id": null,
+  "ptp_role": "none",
+  "channels": null,
+  "sriov_vf_channels": 4,
+  "max_tx_rate": 0,
+  "max_rx_rate": 0
+}
+`
+
+var (
+	channelsValue          = 8
+	vfChannelsValue        = 4
+	vfCountFour            = 4
+	vfDriverNetdevice      = "netdevice"
+	ChannelsInterfaceExpected = interfaces.Interface{
+		ID:         "d1e2f3a4-b5c6-7890-abcd-ef1234567890",
+		Name:       "pxeboot0",
+		Type:       interfaces.IFTypeEthernet,
+		Class:      interfaces.IFClassPlatform,
+		MTU:        9000,
+		IPv4Mode:   &IPv4Modes[0],
+		IPv6Mode:   &ipv6ModeDisabled,
+		VFCount:    &vfCountZero,
+		Uses:       []string{},
+		Users:      []string{},
+		PTPRole:    &ptpRoleNone,
+		PFChannels: &channelsValue,
+	}
+	VFChannelsInterfaceExpected = interfaces.Interface{
+		ID:         "e2f3a4b5-c6d7-8901-abcd-ef2345678901",
+		Name:       "sriov-netdev0",
+		Type:       interfaces.IFTypeVF,
+		Class:      interfaces.IFClassPCISRIOV,
+		MTU:        1500,
+		IPv4Mode:   &ipv4ModeDisabled,
+		IPv6Mode:   &ipv6ModeDisabled,
+		VFCount:    &vfCountFour,
+		VFDriver:   &vfDriverNetdevice,
+		Uses:       []string{"sriov0"},
+		Users:      []string{},
+		PTPRole:    &ptpRoleNone,
+		VFChannels: &vfChannelsValue,
+	}
+)
+
+func HandleChannelsInterfaceCreationSuccessfully(t *testing.T) {
+	th.Mux.HandleFunc("/iinterfaces", func(w http.ResponseWriter, r *http.Request) {
+		th.TestMethod(t, r, "POST")
+		th.TestHeader(t, r, "X-Auth-Token", client.TokenID)
+		th.TestJSONRequestUnordered(t, r, `{
+          "ifclass": "platform",
+          "ifname": "pxeboot0",
+          "iftype": "ethernet",
+          "ihost_uuid": "f73dda8e-be3c-4704-ad1e-ed99e44b846e",
+          "imtu": 9000,
+          "channels": 8,
+          "uses": [],
+          "usesmodify": [],
+          "ptp_role": "none"
+        }`)
+
+		w.WriteHeader(http.StatusAccepted)
+		w.Header().Add("Content-Type", "application/json")
+		fmt.Fprintf(w, ChannelsInterfaceSingleBody)
+	})
+}
+
+func HandleVFChannelsInterfaceCreationSuccessfully(t *testing.T) {
+	th.Mux.HandleFunc("/iinterfaces", func(w http.ResponseWriter, r *http.Request) {
+		th.TestMethod(t, r, "POST")
+		th.TestHeader(t, r, "X-Auth-Token", client.TokenID)
+		th.TestJSONRequestUnordered(t, r, `{
+          "ifclass": "pci-sriov",
+          "ifname": "sriov-netdev0",
+          "iftype": "vf",
+          "ihost_uuid": "f73dda8e-be3c-4704-ad1e-ed99e44b846e",
+          "imtu": 1500,
+          "sriov_numvfs": 4,
+          "sriov_vf_driver": "netdevice",
+          "sriov_vf_channels": 4,
+          "uses": ["sriov0"],
+          "usesmodify": [],
+          "ptp_role": "none"
+        }`)
+
+		w.WriteHeader(http.StatusAccepted)
+		w.Header().Add("Content-Type", "application/json")
+		fmt.Fprintf(w, VFChannelsInterfaceSingleBody)
+	})
+}
+
+func HandleChannelsInterfaceUpdateSuccessfully(t *testing.T) {
+	th.Mux.HandleFunc("/iinterfaces/d1e2f3a4-b5c6-7890-abcd-ef1234567890", func(w http.ResponseWriter, r *http.Request) {
+		th.TestMethod(t, r, "PATCH")
+		th.TestHeader(t, r, "X-Auth-Token", client.TokenID)
+		th.TestHeader(t, r, "Accept", "application/json")
+		th.TestHeader(t, r, "Content-Type", "application/json")
+		th.TestJSONRequestUnordered(t, r, `[ { "op": "replace", "path": "/channels", "value": 8 } ]`)
+		fmt.Fprintf(w, ChannelsInterfaceSingleBody)
+	})
+}

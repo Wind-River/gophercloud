@@ -233,3 +233,84 @@ func TestUpdateOVSAccessInterface(t *testing.T) {
 	}
 	th.CheckDeepEquals(t, OVSAccessInterfaceExpected, *actual)
 }
+
+func TestCreateChannelsInterface(t *testing.T) {
+	th.SetupHTTP()
+	defer th.TeardownHTTP()
+	HandleChannelsInterfaceCreationSuccessfully(t)
+
+	interfaceHostID := "f73dda8e-be3c-4704-ad1e-ed99e44b846e"
+	interfaceName := "pxeboot0"
+	interfaceType := interfaces.IFTypeEthernet
+	interfaceClass := interfaces.IFClassPlatform
+	interfaceMTU := 9000
+	interfaceUses := []string{}
+	interfaceUsers := []string{}
+	ptpRole := interfaces.PTPRoleNone
+	channels := 8
+
+	actual, err := interfaces.Create(client.ServiceClient(), interfaces.InterfaceOpts{
+		HostUUID:   &interfaceHostID,
+		Type:       &interfaceType,
+		Name:       &interfaceName,
+		Class:      &interfaceClass,
+		MTU:        &interfaceMTU,
+		Uses:       &interfaceUses,
+		UsesModify: &interfaceUsers,
+		PTPRole:    &ptpRole,
+		PFChannels: &channels,
+	}).Extract()
+	th.AssertNoErr(t, err)
+
+	th.CheckDeepEquals(t, ChannelsInterfaceExpected, *actual)
+}
+
+func TestCreateVFChannelsInterface(t *testing.T) {
+	th.SetupHTTP()
+	defer th.TeardownHTTP()
+	HandleVFChannelsInterfaceCreationSuccessfully(t)
+
+	interfaceHostID := "f73dda8e-be3c-4704-ad1e-ed99e44b846e"
+	interfaceName := "sriov-netdev0"
+	interfaceType := interfaces.IFTypeVF
+	interfaceClass := interfaces.IFClassPCISRIOV
+	interfaceMTU := 1500
+	interfaceUses := []string{"sriov0"}
+	interfaceUsers := []string{}
+	ptpRole := interfaces.PTPRoleNone
+	vfCount := 4
+	vfDriver := "netdevice"
+	vfChannels := 4
+
+	actual, err := interfaces.Create(client.ServiceClient(), interfaces.InterfaceOpts{
+		HostUUID:   &interfaceHostID,
+		Type:       &interfaceType,
+		Name:       &interfaceName,
+		Class:      &interfaceClass,
+		MTU:        &interfaceMTU,
+		Uses:       &interfaceUses,
+		UsesModify: &interfaceUsers,
+		PTPRole:    &ptpRole,
+		VFCount:    &vfCount,
+		VFDriver:   &vfDriver,
+		VFChannels: &vfChannels,
+	}).Extract()
+	th.AssertNoErr(t, err)
+
+	th.CheckDeepEquals(t, VFChannelsInterfaceExpected, *actual)
+}
+
+func TestUpdateChannelsInterface(t *testing.T) {
+	th.SetupHTTP()
+	defer th.TeardownHTTP()
+	HandleChannelsInterfaceUpdateSuccessfully(t)
+
+	channels := 8
+	actual, err := interfaces.Update(client.ServiceClient(),
+		"d1e2f3a4-b5c6-7890-abcd-ef1234567890",
+		interfaces.InterfaceOpts{PFChannels: &channels}).Extract()
+	if err != nil {
+		t.Fatalf("Unexpected Update error: %v", err)
+	}
+	th.CheckDeepEquals(t, ChannelsInterfaceExpected, *actual)
+}

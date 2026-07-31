@@ -120,6 +120,15 @@ type Interface struct {
 	// max_rx_rate for rx rate limit configuration.
 	MaxRxRate int `json:"max_rx_rate"`
 
+	// Channels defines the number of NIC channels (queues) configured on
+	// the interface. Only applicable if iftype is ethernet or ae.
+	PFChannels *int `json:"channels,omitempty"`
+
+	// SriovVFChannels defines the number of SR-IOV VF channels (queues)
+	// configured on the interface. Only applicable if ifclass is pci-sriov
+	// with sriov_vf_driver netdevice, or iftype vf.
+	VFChannels *int `json:"sriov_vf_channels,omitempty"`
+
 	// OVSAccess indicates whether OVS access is enabled for this interface.
 	OVSAccess *bool `json:"ovs_access,omitempty"`
 }
