@@ -77,6 +77,8 @@ type InterfaceOpts struct {
 	PTPRole          *string   `json:"ptp_role,omitempty" mapstructure:"ptp_role"`
 	MaxTxRate        *int      `json:"max_tx_rate,omitempty" mapstructure:"max_tx_rate"`
 	MaxRxRate        *int      `json:"max_rx_rate,omitempty" mapstructure:"max_rx_rate"`
+	PFChannels       *int      `json:"channels,omitempty" mapstructure:"channels"`
+	VFChannels       *int      `json:"sriov_vf_channels,omitempty" mapstructure:"sriov_vf_channels"`
 	OVSAccess        *bool     `json:"ovs_access,omitempty" mapstructure:"ovs_access"`
 }
 
