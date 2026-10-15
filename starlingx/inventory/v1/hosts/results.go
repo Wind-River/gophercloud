@@ -1,5 +1,5 @@
 /* SPDX-License-Identifier: Apache-2.0 */
-/* Copyright(c) 2019-2022 Wind River Systems, Inc. */
+/* Copyright(c) 2019-2023, 2026 Wind River Systems, Inc. */
 
 package hosts
 
@@ -18,6 +18,7 @@ const (
 // they cannot be renamed by the operator.
 const (
 	Controller0 = "controller-0"
+	ControllerSMPairMate = "controller-1"
 )
 
 // Defines system defined personality specific capabilities for hosts.

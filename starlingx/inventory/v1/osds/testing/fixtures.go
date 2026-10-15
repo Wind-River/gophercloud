@@ -1,11 +1,14 @@
 /* SPDX-License-Identifier: Apache-2.0 */
-/* Copyright(c) 2019 Wind River Systems, Inc. */
+/* Copyright(c) 2019, 2023, 2026 Wind River Systems, Inc. */
 
 package testing
 
 import (
+	"encoding/json"
 	"fmt"
+	"io"
 	"net/http"
+	"sort"
 	"testing"
 
 	"github.com/gophercloud/gophercloud/starlingx/inventory/v1/osds"
@@ -176,10 +179,32 @@ func HandleOSDUpdateSuccessfully(t *testing.T) {
 		th.TestHeader(t, r, "X-Auth-Token", client.TokenID)
 		th.TestHeader(t, r, "Accept", "application/json")
 		th.TestHeader(t, r, "Content-Type", "application/json")
-		th.TestJSONRequest(t, r, `[
+		testPatchRequest(t, r, `[
 			{"op": "replace", "path": "/journal_location", "value": "bb5c7623-0eb2-4581-9942-7abac4a4be86"},
           	{"op": "replace", "path": "/journal_size_mib", "value": 2097152}]`)
 
 		fmt.Fprint(w, OSDSingleBody)
 	})
+}
+
+// testPatchRequest asserts that the request body holds exactly the expected
+// patch operations.  The operations are compared independently of their order
+// because they are built from a map, whose iteration order is undefined.
+func testPatchRequest(t *testing.T, r *http.Request, expected string) {
+	body, err := io.ReadAll(r.Body)
+	th.AssertNoErr(t, err)
+
+	var actualOps, expectedOps []map[string]interface{}
+	th.AssertNoErr(t, json.Unmarshal(body, &actualOps))
+	th.AssertNoErr(t, json.Unmarshal([]byte(expected), &expectedOps))
+
+	sortByPath := func(ops []map[string]interface{}) {
+		sort.Slice(ops, func(i, j int) bool {
+			return fmt.Sprintf("%v", ops[i]["path"]) < fmt.Sprintf("%v", ops[j]["path"])
+		})
+	}
+	sortByPath(actualOps)
+	sortByPath(expectedOps)
+
+	th.CheckDeepEquals(t, expectedOps, actualOps)
 }
