@@ -1,5 +1,5 @@
 /* SPDX-License-Identifier: Apache-2.0 */
-/* Copyright(c) 2019-2021 Wind River Systems, Inc. */
+/* Copyright(c) 2019-2021, 2026 Wind River Systems, Inc. */
 
 package system
 
@@ -74,7 +74,7 @@ type System struct {
 	// Contact is the name and address information of the system contact person.
 	Contact string `json:"contact"`
 
-	// SystemMode is whether the system is running in simplex or duplex.
+	// SystemMode is whether the system is running in simplex, duplex or multiplex.
 	SystemMode string `json:"system_mode"`
 
 	// SystemType is whether the system is configured as a single node or multi
