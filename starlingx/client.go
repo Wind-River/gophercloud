@@ -15,6 +15,14 @@ func initClientOpts(client *gophercloud.ProviderClient, eo gophercloud.EndpointO
 	sc.ProviderClient = client
 	sc.Endpoint = url
 	sc.Type = clientType
+	// Install FaultErrorContext on every StarlingX client built here, so error
+	// responses carry the server's reason instead of a generic status message.
+	// This covers both the sysinv (inventory) client and the nfv-vim
+	// orchestration client under nfv/v1. parseFaultString handles the sysinv
+	// {"error_message": "{...faultstring...}"} shape as well as the top-level
+	// {"faultstring": ...} WSME body that nfv-vim returns, and falls back to the
+	// default gophercloud message when the body carries no reason.
+	sc.DefaultErrorContext = FaultErrorContext()
 	return sc, nil
 }
 
