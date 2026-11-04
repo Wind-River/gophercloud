@@ -4,8 +4,6 @@
 package swupgrade
 
 import (
-	"encoding/json"
-
 	"github.com/gophercloud/gophercloud"
 )
 
@@ -107,18 +105,4 @@ type SwUpgrade struct {
 
 	// AbortPhase describes the abort phase of the strategy.
 	AbortPhase Phase `json:"abort-phase,omitempty"`
-}
-
-// GenerateSwUpgrade takes a JSON string and converts it into a SwUpgrade
-// structure. It returns a pointer to SwUpgrade and an error if the JSON
-// parsing fails.
-func GenerateSwUpgrade(jsonData string) (*SwUpgrade, error) {
-	var data map[string]SwUpgrade
-	err := json.Unmarshal([]byte(jsonData), &data)
-	if err != nil {
-		return nil, err
-	}
-
-	swUpgrade := data["strategy"]
-	return &swUpgrade, nil
 }

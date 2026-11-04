@@ -4,8 +4,6 @@
 package kubeupgrade
 
 import (
-	"encoding/json"
-
 	"github.com/gophercloud/gophercloud"
 )
 
@@ -107,18 +105,4 @@ type KubeUpgrade struct {
 
 	// AbortPhase describes the abort phase of the strategy.
 	AbortPhase Phase `json:"abort-phase,omitempty"`
-}
-
-// GenerateKubeUpgrade takes a JSON string and converts it into a KubeUpgrade
-// structure. It returns a pointer to KubeUpgrade and an error if the JSON
-// parsing fails.
-func GenerateKubeUpgrade(jsonData string) (*KubeUpgrade, error) {
-	var data map[string]KubeUpgrade
-	err := json.Unmarshal([]byte(jsonData), &data)
-	if err != nil {
-		return nil, err
-	}
-
-	kubeUpgrade := data["strategy"]
-	return &kubeUpgrade, nil
 }

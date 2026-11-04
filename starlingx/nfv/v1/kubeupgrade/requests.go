@@ -4,8 +4,6 @@
 package kubeupgrade
 
 import (
-	"encoding/json"
-
 	"github.com/gophercloud/gophercloud"
 	common "github.com/gophercloud/gophercloud/starlingx"
 )
@@ -35,46 +33,33 @@ type KubeUpgradeOpts struct {
 }
 
 func performRequest(c *gophercloud.ServiceClient, url string, reqBody interface{}) (*KubeUpgrade, error) {
-	var respBody map[string]interface{}
-	_, err := c.Post(url, reqBody, &respBody, &gophercloud.RequestOpts{
+	var resp struct {
+		Strategy *KubeUpgrade `json:"strategy"`
+	}
+	_, err := c.Post(url, reqBody, &resp, &gophercloud.RequestOpts{
 		OkCodes: []int{200, 201, 202},
 	})
 	if err != nil {
 		return nil, err
 	}
-
-	respJSON, err := json.Marshal(respBody)
-	if err != nil {
-		return nil, err
-	}
-
-	kubeUpgrade, err := GenerateKubeUpgrade(string(respJSON))
-	if err != nil {
-		return nil, err
-	}
-
-	return kubeUpgrade, nil
+	// resp.Strategy is nil when "strategy" is absent or explicitly null, so
+	// callers can treat "no strategy" distinctly from a populated one.
+	return resp.Strategy, nil
 }
 
-// Show returns the current kube-upgrade strategy.
+// Show returns the current kube-upgrade strategy, or a nil pointer if no
+// strategy is active. The VIM reports {"strategy": null} (or omits the key)
+// when none exists; a nil pointer and nil error are returned in that case so
+// callers can distinguish "no active strategy" from a parse failure.
 func Show(c *gophercloud.ServiceClient) (*KubeUpgrade, error) {
-	var respBody map[string]interface{}
-	_, err := c.Get(showURL(c), &respBody, nil)
-	if err != nil {
+	var resp struct {
+		Strategy *KubeUpgrade `json:"strategy"`
+	}
+	if _, err := c.Get(showURL(c), &resp, nil); err != nil {
 		return nil, err
 	}
-
-	respJSON, err := json.Marshal(respBody)
-	if err != nil {
-		return nil, err
-	}
-
-	kubeUpgrade, err := GenerateKubeUpgrade(string(respJSON))
-	if err != nil {
-		return nil, err
-	}
-
-	return kubeUpgrade, nil
+	// resp.Strategy is nil when "strategy" is absent or explicitly null.
+	return resp.Strategy, nil
 }
 
 // Create accepts a KubeUpgradeOpts struct and creates a new kube-upgrade

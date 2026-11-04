@@ -23,8 +23,11 @@ func List(c *gophercloud.ServiceClient) ([]KubeUpgrade, error) {
 	return resp.KubeUpgrades, nil
 }
 
-// Delete removes the current kube upgrade record. HTTP 404 is treated as
-// success (the record is already gone), making the delete idempotent.
+// Delete removes the current kube upgrade record. An error status (e.g. the
+// record is already gone) is returned, not swallowed here; callers that want an
+// idempotent delete handle it (see the DeleteKubeUpgrade adapter), matching the
+// nfv swupgrade/kubeupgrade delete packages. OkCodes must be set explicitly or
+// gophercloud treats a successful 200/202/204 as an unexpected status.
 func Delete(c *gophercloud.ServiceClient) (r DeleteResult) {
 	_, r.Err = c.Delete(rootURL(c), &gophercloud.RequestOpts{
 		OkCodes: []int{200, 202, 204},

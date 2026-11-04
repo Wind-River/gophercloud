@@ -4,24 +4,20 @@
 package currentstrategy
 
 import (
-	"encoding/json"
-
 	"github.com/gophercloud/gophercloud"
 )
 
 // Show returns the orchestration strategy currently known to the VIM, or a nil
-// pointer if no strategy is active.
+// pointer if no strategy is active. The VIM reports {"strategy": null} when no
+// strategy exists; in that case a nil pointer and nil error are returned so
+// callers can treat "no active strategy" distinctly from a parse failure.
 func Show(c *gophercloud.ServiceClient) (*CurrentStrategy, error) {
-	var respBody map[string]interface{}
-	_, err := c.Get(showURL(c), &respBody, nil)
-	if err != nil {
+	var resp struct {
+		Strategy *CurrentStrategy `json:"strategy"`
+	}
+	if _, err := c.Get(showURL(c), &resp, nil); err != nil {
 		return nil, err
 	}
-
-	respJSON, err := json.Marshal(respBody)
-	if err != nil {
-		return nil, err
-	}
-
-	return GenerateCurrentStrategy(string(respJSON))
+	// resp.Strategy is nil when "strategy" is absent or explicitly null.
+	return resp.Strategy, nil
 }
