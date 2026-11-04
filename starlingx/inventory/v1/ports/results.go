@@ -39,6 +39,23 @@ type Port struct {
 	// InterfaceID is the unique UUID value of the interface to which this port
 	// is related.
 	InterfaceID string `json:"interface_uuid"`
+
+	// NumChannels is the current number of combined NIC channels (queues)
+	// configured on the physical port (read-only). WRCP 26.10+.
+	NumChannels *int `json:"numchannels,omitempty"`
+
+	// MaxChannels is the maximum combined channels supported by the port
+	// hardware; the upper bound for an interface's channels (read-only).
+	// WRCP 26.10+.
+	MaxChannels *int `json:"maxchannels,omitempty"`
+
+	// SriovVFNumChannels is the current number of channels on each SR-IOV VF
+	// of the port (read-only). WRCP 26.10+.
+	SriovVFNumChannels *int `json:"sriov_vf_numchannels,omitempty"`
+
+	// SriovVFMaxChannels is the maximum channels per SR-IOV VF; the upper
+	// bound for an interface's sriov_vf_channels (read-only). WRCP 26.10+.
+	SriovVFMaxChannels *int `json:"sriov_vf_maxchannels,omitempty"`
 }
 
 // PortPage is the page returned by a pager when traversing over a
