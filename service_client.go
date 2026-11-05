@@ -32,6 +32,11 @@ type ServiceClient struct {
 	// MoreHeaders allows users (or Gophercloud) to set service-wide headers on requests. Put another way,
 	// values set in this field will be set on all the HTTP requests the service client sends.
 	MoreHeaders map[string]string
+	// DefaultErrorContext, if set, is used as the ErrorContext for every request
+	// sent through this client that does not specify its own RequestOpts.ErrorContext.
+	// It lets a service install service-specific error handling (via the ErrXXXer
+	// interfaces) without having to set it on each individual request.
+	DefaultErrorContext error
 }
 
 // ResourceBaseURL returns the base URL of any resources used by this service. It MUST end with a /.
@@ -60,6 +65,10 @@ func (client *ServiceClient) initReqOpts(url string, JSONBody interface{}, JSONR
 
 	if opts.MoreHeaders == nil {
 		opts.MoreHeaders = make(map[string]string)
+	}
+
+	if opts.ErrorContext == nil {
+		opts.ErrorContext = client.DefaultErrorContext
 	}
 
 	if client.Microversion != "" {
