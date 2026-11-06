@@ -20,3 +20,9 @@ func getURL(c *gophercloud.ServiceClient, releaseID string) string {
 func metapackageURL(c *gophercloud.ServiceClient) string {
 	return c.ServiceURL("v1", "release", "metapackage")
 }
+
+// metapackageListAllURL is the metapackage list URL with the bare "all" query
+// flag. Without it USM returns only DEPLOYED metapackages.
+func metapackageListAllURL(c *gophercloud.ServiceClient) string {
+	return metapackageURL(c) + "?all"
+}

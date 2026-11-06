@@ -27,9 +27,8 @@ func List(c *gophercloud.ServiceClient) ([]Release, error) {
 // DEPLOYED metapackages, which would make valid AVAILABLE releases appear
 // unknown to callers performing override validation.
 func ListMetapackages(c *gophercloud.ServiceClient) ([]Release, error) {
-	url := metapackageURL(c) + "?all"
 	var releases []Release
-	_, err := c.Get(url, &releases, &gophercloud.RequestOpts{
+	_, err := c.Get(metapackageListAllURL(c), &releases, &gophercloud.RequestOpts{
 		OkCodes: []int{200},
 	})
 	if err != nil {

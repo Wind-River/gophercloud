@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright(c) 2026 Wind River Systems, Inc. */
 
-package health
+package kubeupgradehealth
 
 import "github.com/gophercloud/gophercloud"
 

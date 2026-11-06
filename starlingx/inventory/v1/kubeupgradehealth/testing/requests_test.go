@@ -7,7 +7,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/gophercloud/gophercloud/starlingx/inventory/v1/health"
+	"github.com/gophercloud/gophercloud/starlingx/inventory/v1/kubeupgradehealth"
 	th "github.com/gophercloud/gophercloud/testhelper"
 	"github.com/gophercloud/gophercloud/testhelper/client"
 )
@@ -17,7 +17,7 @@ func TestKubeUpgradeHealthy(t *testing.T) {
 	defer th.TeardownHTTP()
 	HandleKubeUpgradeHealthSuccessfully(t, false, HealthyBody)
 
-	body, err := health.KubeUpgrade(client.ServiceClient(), false)
+	body, err := kubeupgradehealth.KubeUpgrade(client.ServiceClient(), false)
 	th.AssertNoErr(t, err)
 	if !strings.Contains(body, "[OK]") || strings.Contains(body, "[Fail]") {
 		t.Errorf("expected healthy body, got: %q", body)
@@ -29,7 +29,7 @@ func TestKubeUpgradeHealthyRelaxed(t *testing.T) {
 	defer th.TeardownHTTP()
 	HandleKubeUpgradeHealthSuccessfully(t, true, HealthyBody)
 
-	body, err := health.KubeUpgrade(client.ServiceClient(), true)
+	body, err := kubeupgradehealth.KubeUpgrade(client.ServiceClient(), true)
 	th.AssertNoErr(t, err)
 	if !strings.Contains(body, "[OK]") {
 		t.Errorf("expected healthy body, got: %q", body)
@@ -41,7 +41,7 @@ func TestKubeUpgradeUnhealthy(t *testing.T) {
 	defer th.TeardownHTTP()
 	HandleKubeUpgradeHealthSuccessfully(t, false, UnhealthyBody)
 
-	body, err := health.KubeUpgrade(client.ServiceClient(), false)
+	body, err := kubeupgradehealth.KubeUpgrade(client.ServiceClient(), false)
 	th.AssertNoErr(t, err)
 	if !strings.Contains(body, "[Fail]") {
 		t.Errorf("expected unhealthy body with [Fail], got: %q", body)
