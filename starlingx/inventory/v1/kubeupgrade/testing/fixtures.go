@@ -56,6 +56,7 @@ func HandleKubeUpgradeDeleteSuccessfully(t *testing.T) {
 	th.Mux.HandleFunc("/kube_upgrade", func(w http.ResponseWriter, r *http.Request) {
 		th.TestMethod(t, r, "DELETE")
 		th.TestHeader(t, r, "X-Auth-Token", client.TokenID)
-		w.WriteHeader(http.StatusNoContent)
+		// sysinv returns 200 on a successful kube upgrade delete.
+		w.WriteHeader(http.StatusOK)
 	})
 }

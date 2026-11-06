@@ -24,8 +24,9 @@ func List(c *gophercloud.ServiceClient) ([]KubeUpgrade, error) {
 }
 
 // Delete removes the current kube upgrade record. Error statuses (e.g. the
-// record no longer exists) are returned to the caller. OkCodes adds 200 to
-// gophercloud's default DELETE codes (202, 204).
+// record no longer exists) are returned to the caller. sysinv returns 200 on a
+// successful delete, which is not in gophercloud's default DELETE codes
+// (202, 204), so OkCodes is set explicitly.
 func Delete(c *gophercloud.ServiceClient) (r DeleteResult) {
 	_, r.Err = c.Delete(rootURL(c), &gophercloud.RequestOpts{
 		OkCodes: []int{200, 202, 204},

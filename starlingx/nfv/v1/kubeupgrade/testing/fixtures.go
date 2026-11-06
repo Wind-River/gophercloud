@@ -128,6 +128,7 @@ func HandleStrategyDeleteSuccessfully(t *testing.T) {
 		func(w http.ResponseWriter, r *http.Request) {
 			th.TestMethod(t, r, "DELETE")
 			th.TestHeader(t, r, "X-Auth-Token", client.TokenID)
-			w.WriteHeader(http.StatusNoContent)
+			// The VIM returns 200 on a successful strategy delete.
+			w.WriteHeader(http.StatusOK)
 		})
 }

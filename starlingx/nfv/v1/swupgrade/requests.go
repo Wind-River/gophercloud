@@ -106,8 +106,9 @@ func Create(c *gophercloud.ServiceClient, opts SwUpgradeOpts) (*SwUpgrade, error
 
 // Delete deletes the current strategy.
 func Delete(c *gophercloud.ServiceClient) (r DeleteResult) {
-	// sw-upgrade DELETE needs an empty JSON body. OkCodes adds 200 to
-	// gophercloud's default DELETE codes (202, 204).
+	// sw-upgrade DELETE needs an empty JSON body. The VIM returns 200 on a
+	// successful delete, which is not in gophercloud's default DELETE codes
+	// (202, 204), so OkCodes is set explicitly.
 	m := make(map[string]interface{})
 	_, r.Err = c.Delete(deleteURL(c), &gophercloud.RequestOpts{
 		JSONBody: m,
